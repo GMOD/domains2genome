@@ -10,7 +10,7 @@
 [changelog]
 body = """
 {% if version -%}
-## [{{ version | trim_start_matches(pat="v") }}](https://github.com/cmdcolin/domains2genome/compare/{% if previous %}{{ previous.version }}{% else %}{{ version }}{% endif %}...{{ version }}) ({{ timestamp | date(format="%Y-%m-%d") }})
+## [{{ version | trim_start_matches(pat="v") }}](https://github.com/GMOD/domains2genome/compare/{% if previous %}{{ previous.version }}{% else %}{{ version }}{% endif %}...{{ version }}) ({{ timestamp | date(format="%Y-%m-%d") }})
 {% else -%}
 ## [Unreleased]
 {% endif %}
@@ -18,7 +18,7 @@ body = """
 ### {{ group | striptags | trim }}
 
 {% for commit in commits %}\
-- {% if commit.breaking %}**BREAKING** {% endif %}{{ commit.message | split(pat="\n") | first | trim | upper_first }} ([{{ commit.id | truncate(length=7, end="") }}](https://github.com/cmdcolin/domains2genome/commit/{{ commit.id }}))
+- {% if commit.breaking %}**BREAKING** {% endif %}{{ commit.message | split(pat="\n") | first | trim | upper_first }} ([{{ commit.id | truncate(length=7, end="") }}](https://github.com/GMOD/domains2genome/commit/{{ commit.id }}))
 {% endfor %}
 {% endfor %}\
 """
