@@ -1,3 +1,9 @@
+## [2.0.2](https://github.com/GMOD/domains2genome/compare/v2.0.1...v2.0.2) (2026-10-24)
+
+### Other Changes
+
+- README runs InterProScan 6 for GFF3, whose names label a gene track ([4e88e84](https://github.com/GMOD/domains2genome/commit/4e88e843d854e8f03afc408c9d5f93c1454293f4))
+
 ## [2.0.1](https://github.com/GMOD/domains2genome/compare/v2.0.0...v2.0.1) (2026-10-24)
 
 ### Other Changes
