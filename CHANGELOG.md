@@ -1,3 +1,11 @@
+## [2.0.1](https://github.com/GMOD/domains2genome/compare/v2.0.0...v2.0.1) (2026-10-24)
+
+### Other Changes
+
+- Update dependencies to latest ([4fe0611](https://github.com/GMOD/domains2genome/commit/4fe0611faa22c07cc59f713b760730497dd0fd61))
+- Rows that start together sort by the whole line ([7ffa213](https://github.com/GMOD/domains2genome/commit/7ffa21383646b32be5f1f2e8eb3de1076eed2067))
+- README walks from a genome to its domains through InterProScan or hmmscan ([3848939](https://github.com/GMOD/domains2genome/commit/3848939f9a770ccdc085e203c4799f03897ec3fb))
+
 ## [2.0.0](https://github.com/GMOD/domains2genome/compare/v1.0.3...v2.0.0) (2026-10-24)
 
 ### Other Changes
