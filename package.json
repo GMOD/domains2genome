@@ -1,11 +1,11 @@
 {
-  "name": "interproscan2genome",
+  "name": "domains2genome",
   "description": "Place InterProScan or HMMER protein domain calls on the genome as BED12, a block per exon",
-  "version": "1.0.3",
+  "version": "0.0.0",
   "packageManager": "pnpm@11.15.1",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cmdcolin/interproscan2genome.git"
+    "url": "git+https://github.com/cmdcolin/domains2genome.git"
   },
   "license": "MIT",
   "type": "module",
@@ -16,6 +16,7 @@
     "require": "./dist/index.js"
   },
   "bin": {
+    "domains2genome": "esm/cli.js",
     "interproscan2genome": "esm/cli.js"
   },
   "files": [

@@ -5,7 +5,7 @@ import { parseArgs } from 'node:util'
 import { placeProteinFeatures, placementWarnings } from './place.ts'
 import { BED_HEADER } from './project.ts'
 
-const usage = `Usage: interproscan2genome <genes.gff3|gtf> <calls> [options]
+const usage = `Usage: domains2genome <genes.gff3|gtf> <calls> [options]
 
 Places protein features (InterProScan TSV or GFF3, or HMMER --domtblout) on
 the genome through each transcript's CDS, as BED12 with a block per exon.
@@ -17,8 +17,8 @@ Options:
   -h, --help         show this help
 
 Examples:
-  interproscan2genome genes.gff3 interpro.tsv --source Pfam > pfam.bed
-  interproscan2genome genes.gff3 pfam.domtblout | bgzip > pfam.bed.gz
+  domains2genome genes.gff3 interpro.tsv --source Pfam > pfam.bed
+  domains2genome genes.gff3 pfam.domtblout | bgzip > pfam.bed.gz
   tabix -p bed pfam.bed.gz
 
 The calls name each protein by its transcript ID, its CDS protein_id, or its

@@ -1,33 +1,33 @@
-# interproscan2genome
+# domains2genome
 
-interproscan2genome places protein domain calls on the genome, so a genome
-browser can draw them over the exons that encode them.
+domains2genome places protein domain calls on the genome, so a genome browser
+can draw them over the exons that encode them.
 
 - **In:** gene models (GFF3 or GTF) and domain calls on their proteins
   (InterProScan TSV or GFF3, or HMMER `--domtblout`)
 - **Out:** BED12, one row per domain, a block per exon it spans
-- `interproscan2genome` needs no JBrowse install. JBrowse's
+- `domains2genome` needs no JBrowse install. JBrowse's
   `jbrowse make-protein-features` calls this package to place the same calls
 
 ## Install
 
 ```bash
-npm install -g interproscan2genome
+npm install -g domains2genome
 ```
 
-or run it once with `npx interproscan2genome`.
+or run it once with `npx domains2genome`.
 
 ## Usage
 
 ```bash
 # Pfam rows of an InterProScan run
-interproscan2genome genes.gff3 interpro.tsv --source Pfam > pfam.bed
+domains2genome genes.gff3 interpro.tsv --source Pfam > pfam.bed
 
 # hmmscan against Pfam
-interproscan2genome genes.gff3 pfam.domtblout > pfam.bed
+domains2genome genes.gff3 pfam.domtblout > pfam.bed
 
 # bgzipped and indexed, for a browser to read by region
-interproscan2genome genes.gff3 interpro.tsv | bgzip > domains.bed.gz
+domains2genome genes.gff3 interpro.tsv | bgzip > domains.bed.gz
 tabix -p bed domains.bed.gz
 ```
 
@@ -57,7 +57,7 @@ shows.
 ## As a library
 
 ```ts
-import { placeProteinFeatures } from 'interproscan2genome'
+import { placeProteinFeatures } from 'domains2genome'
 
 const { lines, unmatched } = await placeProteinFeatures(
   'genes.gff3',
@@ -66,10 +66,11 @@ const { lines, unmatched } = await placeProteinFeatures(
 )
 ```
 
-## From 1.x
+## From interproscan2genome
 
-1.x read InterProScan's GFF3 only, and printed GFF3 with one span per domain,
-introns included. The `--genomeGFF` and `--interproGFF` flags still work, but
-the output is now BED12 a block per exon. The genome positions differ too: 1.x
+This package was `interproscan2genome`. Its 1.x read InterProScan's GFF3 only
+and printed GFF3 with one span per domain, introns included. The
+`interproscan2genome` command and its `--genomeGFF` and `--interproGFF` flags
+still run, and now print BED12 a block per exon. Positions differ as well: 1.x
 divided residue positions by three, which put each domain about a third of the
 way along its protein.
