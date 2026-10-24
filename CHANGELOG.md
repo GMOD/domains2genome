@@ -1,3 +1,10 @@
+## [2.1.0](https://github.com/GMOD/domains2genome/compare/v2.0.2...v2.1.0) (2026-10-24)
+
+### Other Changes
+
+- A --source matching no call names the sources the calls come from ([b372efa](https://github.com/GMOD/domains2genome/commit/b372efa5f9a4c567b864fd5b0c46f7a6516a0211))
+- Supports Node 18.3, where parseArgs arrived, as @jbrowse/cli does ([718e305](https://github.com/GMOD/domains2genome/commit/718e3058565d636631ffd69cb470082fb65c1621))
+
 ## [2.0.2](https://github.com/GMOD/domains2genome/compare/v2.0.1...v2.0.2) (2026-10-24)
 
 ### Other Changes
