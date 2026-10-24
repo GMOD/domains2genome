@@ -39,12 +39,16 @@ sed -i '/^>/!s/[.*]/X/g' proteins.faa
 ```bash
 nextflow run ebi-pf-team/interproscan6 -r 6.0.3.0 -profile docker \
   --datadir data --input proteins.faa \
-  --applications Pfam --formats tsv
+  --applications Pfam --formats gff3
 ```
 
-- InterProScan writes `proteins.faa.tsv`
+- InterProScan writes `proteins.faa.gff3`. Its GFF3 names each domain by Pfam's
+  short name (`Gp_dh_N`), which labels a gene track better than the description
+  its TSV gives (`--formats tsv` reads the same otherwise)
 - Leave out `--applications` to run every analysis, then pick the ones to place
   with `--source` in step 3
+- Without Docker, `-profile apptainer` runs the same containers, and Apptainer
+  installs without root (`tools/install-unprivileged.sh` in its repository)
 - On a cluster, `-profile singularity,slurm` runs each batch as a job, as
   InterProScan's scaling docs describe
 - InterProScan 5 takes
@@ -79,7 +83,7 @@ cat chunk.*.faa.domtblout > pfam.domtblout
 ### 3. Place the calls on the genome
 
 ```bash
-domains2genome genes.gff3 proteins.faa.tsv > domains.bed   # InterProScan
+domains2genome genes.gff3 proteins.faa.gff3 > domains.bed  # InterProScan
 domains2genome genes.gff3 pfam.domtblout > domains.bed     # HMMER
 
 # bgzipped and indexed, for a browser to read by region
@@ -90,7 +94,6 @@ tabix -p bed domains.bed.gz
 - `--source Pfam,SMART` keeps only the analyses named, as InterProScan names
   them in its fourth column
 - `--out file.bed` writes the BED to a file instead of to stdout
-- InterProScan's GFF3 output reads the same as its TSV
 
 The calls must come from proteins translated from the same gene models. Each
 call names its protein by the transcript ID, the CDS `protein_id` or the CDS ID,
