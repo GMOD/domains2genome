@@ -1,3 +1,6 @@
-out.gff
-node_modules
 dist
+esm
+node_modules
+.eslintcache
+.claude/settings.local.json
+.claude/worktrees/

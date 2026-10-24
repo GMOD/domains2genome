@@ -1,18 +1,23 @@
 {
   "include": ["src"],
   "compilerOptions": {
-    "outDir": "dist",
-    "target": "ES2015",
-    "skipLibCheck": true,
-    "module": "commonjs",
+    "target": "es2022",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "lib": ["esnext"],
     "types": ["node"],
-    "lib": ["dom", "esnext"],
+    "rootDir": "src",
+    "outDir": "dist",
     "declaration": true,
-    "moduleResolution": "node",
     "sourceMap": true,
     "strict": true,
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "erasableSyntaxOnly": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noUncheckedIndexedAccess": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "esModuleInterop": true
+    "noFallthroughCasesInSwitch": true
   }
 }

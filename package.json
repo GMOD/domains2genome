@@ -1,31 +1,77 @@
 {
   "name": "interproscan2genome",
-  "license": "MIT",
+  "description": "Place InterProScan or HMMER protein domain calls on the genome as BED12, a block per exon",
   "version": "1.0.3",
+  "packageManager": "pnpm@11.15.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cmdcolin/interproscan2genome.git"
+  },
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "main": "dist/index.js",
+  "exports": {
+    "import": "./esm/index.js",
+    "require": "./dist/index.js"
+  },
   "bin": {
-    "interproscan2genome": "dist/index.js"
+    "interproscan2genome": "esm/cli.js"
   },
   "files": [
     "dist",
+    "esm",
     "src"
   ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "clean": "rimraf dist",
-    "prebuild": "npm run clean",
-    "build": "tsc",
-    "preversion": "npm run build",
-    "postversion": "git push --follow-tags"
+    "test": "vitest",
+    "clean": "rimraf dist esm",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint --report-unused-disable-directives --max-warnings 0",
+    "typecheck": "tsc --noEmit -p tsconfig.lint.json",
+    "prebuild": "pnpm clean",
+    "build:esm": "tsc --outDir esm",
+    "build:es5": "tsc --module commonjs --moduleResolution bundler --outDir dist",
+    "postbuild:es5": "echo '{\"type\": \"commonjs\"}' > dist/package.json",
+    "preversion": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm test --run && pnpm build",
+    "version": "git-cliff --tag v$npm_package_version --unreleased --prepend CHANGELOG.md && git add CHANGELOG.md",
+    "postversion": "git push --follow-tags",
+    "build": "pnpm build:esm && pnpm build:es5"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
-    "@gmod/gff": "^1.3.0",
-    "g2p_mapper": "^1.0.4",
-    "yargs": "^17.7.2"
+    "g2p_mapper": "^2.3.1"
   },
   "devDependencies": {
-    "@types/node": "^22.8.4",
-    "@types/yargs": "^17.0.33",
-    "prettier": "^3.3.3",
-    "rimraf": "^6.0.1",
-    "typescript": "^5.6.3"
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^25.9.5",
+    "eslint": "^10.8.0",
+    "eslint-plugin-import-x": "^4.17.1",
+    "git-cliff": "^2.13.1",
+    "prettier": "^3.9.6",
+    "rimraf": "^6.1.3",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.65.0",
+    "vitest": "^4.1.10"
+  },
+  "keywords": [
+    "bioinformatics",
+    "genomics",
+    "interproscan",
+    "hmmer",
+    "pfam",
+    "protein domains",
+    "bed",
+    "gff3"
+  ],
+  "author": {
+    "name": "Colin Diesh",
+    "email": "colin.diesh@gmail.com"
   }
 }

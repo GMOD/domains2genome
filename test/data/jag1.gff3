@@ -1,0 +1,172 @@
+##gff-version 3.1.26
+##interproscan-version 6.0.0
+##sequence-region sp|Q9QXX0|JAG1_MOUSE 1 1218
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	389	400	.	.	.	Name=ASX_HYDROXYL;Alias=PS00010;Dbxref=InterPro:IPR000152;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	427	438	.	.	.	Name=ASX_HYDROXYL;Alias=PS00010;Dbxref=InterPro:IPR000152;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	464	475	.	.	.	Name=ASX_HYDROXYL;Alias=PS00010;Dbxref=InterPro:IPR000152;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	502	513	.	.	.	Name=ASX_HYDROXYL;Alias=PS00010;Dbxref=InterPro:IPR000152;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	540	551	.	.	.	Name=ASX_HYDROXYL;Alias=PS00010;Dbxref=InterPro:IPR000152;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	644	655	.	.	.	Name=ASX_HYDROXYL;Alias=PS00010;Dbxref=InterPro:IPR000152;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	682	693	.	.	.	Name=ASX_HYDROXYL;Alias=PS00010;Dbxref=InterPro:IPR000152;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	720	731	.	.	.	Name=ASX_HYDROXYL;Alias=PS00010;Dbxref=InterPro:IPR000152;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	797	808	.	.	.	Name=ASX_HYDROXYL;Alias=PS00010;Dbxref=InterPro:IPR000152;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	835	846	.	.	.	Name=ASX_HYDROXYL;Alias=PS00010;Dbxref=InterPro:IPR000152;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	251	262	.	.	.	Name=EGF_1;Alias=PS00022;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	322	333	.	.	.	Name=EGF_1;Alias=PS00022;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	360	371	.	.	.	Name=EGF_1;Alias=PS00022;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	398	409	.	.	.	Name=EGF_1;Alias=PS00022;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	436	447	.	.	.	Name=EGF_1;Alias=PS00022;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	473	484	.	.	.	Name=EGF_1;Alias=PS00022;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	511	522	.	.	.	Name=EGF_1;Alias=PS00022;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	549	560	.	.	.	Name=EGF_1;Alias=PS00022;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	615	626	.	.	.	Name=EGF_1;Alias=PS00022;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	653	664	.	.	.	Name=EGF_1;Alias=PS00022;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	691	702	.	.	.	Name=EGF_1;Alias=PS00022;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	729	740	.	.	.	Name=EGF_1;Alias=PS00022;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	768	779	.	.	.	Name=EGF_1;Alias=PS00022;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	806	817	.	.	.	Name=EGF_1;Alias=PS00022;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	844	855	.	.	.	Name=EGF_1;Alias=PS00022;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	322	333	.	.	.	Name=EGF_2;Alias=PS01186;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	360	371	.	.	.	Name=EGF_2;Alias=PS01186;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	436	447	.	.	.	Name=EGF_2;Alias=PS01186;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	473	484	.	.	.	Name=EGF_2;Alias=PS01186;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	511	522	.	.	.	Name=EGF_2;Alias=PS01186;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	615	626	.	.	.	Name=EGF_2;Alias=PS01186;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	653	664	.	.	.	Name=EGF_2;Alias=PS01186;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	691	702	.	.	.	Name=EGF_2;Alias=PS01186;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	729	740	.	.	.	Name=EGF_2;Alias=PS01186;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	768	779	.	.	.	Name=EGF_2;Alias=PS01186;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	806	817	.	.	.	Name=EGF_2;Alias=PS01186;Dbxref=InterPro:IPR000742;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	374	398	.	.	.	Name=EGF_CA;Alias=PS01187;Dbxref=InterPro:IPR018097;Ontology_term=GO:0005509;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	487	511	.	.	.	Name=EGF_CA;Alias=PS01187;Dbxref=InterPro:IPR018097;Ontology_term=GO:0005509;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	629	653	.	.	.	Name=EGF_CA;Alias=PS01187;Dbxref=InterPro:IPR018097;Ontology_term=GO:0005509;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE patterns	polypeptide_motif	820	844	.	.	.	Name=EGF_CA;Alias=PS01187;Dbxref=InterPro:IPR018097;Ontology_term=GO:0005509;type=Conserved_site;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	167	229	2.5E-37	.	.	Name=DSL;Alias=SM00051;Dbxref=InterPro:IPR001774;Ontology_term=GO:0007154,GO:0016020;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	296	334	6.0E-7	.	.	Name=EGF_CA;Alias=SM00179;Dbxref=InterPro:IPR001881;Ontology_term=GO:0005509;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	340	372	0.042	.	.	Name=EGF_CA;Alias=SM00179;Dbxref=InterPro:IPR001881;Ontology_term=GO:0005509;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	374	410	4.0E-11	.	.	Name=EGF_CA;Alias=SM00179;Dbxref=InterPro:IPR001881;Ontology_term=GO:0005509;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	412	448	3.9E-9	.	.	Name=EGF_CA;Alias=SM00179;Dbxref=InterPro:IPR001881;Ontology_term=GO:0005509;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	450	485	3.2E-10	.	.	Name=EGF_CA;Alias=SM00179;Dbxref=InterPro:IPR001881;Ontology_term=GO:0005509;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	487	523	2.3E-12	.	.	Name=EGF_CA;Alias=SM00179;Dbxref=InterPro:IPR001881;Ontology_term=GO:0005509;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	525	561	5.6E-8	.	.	Name=EGF_CA;Alias=SM00179;Dbxref=InterPro:IPR001881;Ontology_term=GO:0005509;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	575	627	0.058	.	.	Name=EGF_CA;Alias=SM00179;Dbxref=InterPro:IPR001881;Ontology_term=GO:0005509;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	629	665	3.4E-12	.	.	Name=EGF_CA;Alias=SM00179;Dbxref=InterPro:IPR001881;Ontology_term=GO:0005509;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	667	703	9.0E-9	.	.	Name=EGF_CA;Alias=SM00179;Dbxref=InterPro:IPR001881;Ontology_term=GO:0005509;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	709	741	0.0053	.	.	Name=EGF_CA;Alias=SM00179;Dbxref=InterPro:IPR001881;Ontology_term=GO:0005509;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	748	780	0.022	.	.	Name=EGF_CA;Alias=SM00179;Dbxref=InterPro:IPR001881;Ontology_term=GO:0005509;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	782	818	4.8E-7	.	.	Name=EGF_CA;Alias=SM00179;Dbxref=InterPro:IPR001881;Ontology_term=GO:0005509;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	820	856	5.1E-11	.	.	Name=EGF_CA;Alias=SM00179;Dbxref=InterPro:IPR001881;Ontology_term=GO:0005509;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	233	263	22.0	.	.	Name=EGF;Alias=SM00181;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	264	294	30.0	.	.	Name=EGF;Alias=SM00181;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	299	334	2.0E-4	.	.	Name=EGF;Alias=SM00181;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	339	372	3.6E-5	.	.	Name=EGF;Alias=SM00181;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	377	410	1.9E-6	.	.	Name=EGF;Alias=SM00181;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	415	448	3.4E-5	.	.	Name=EGF;Alias=SM00181;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	453	485	9.0E-7	.	.	Name=EGF;Alias=SM00181;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	490	523	5.3E-7	.	.	Name=EGF;Alias=SM00181;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	528	561	4.9E-5	.	.	Name=EGF;Alias=SM00181;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	577	627	0.3	.	.	Name=EGF;Alias=SM00181;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	632	665	3.8E-8	.	.	Name=EGF;Alias=SM00181;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	670	703	9.4E-6	.	.	Name=EGF;Alias=SM00181;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	708	741	0.0081	.	.	Name=EGF;Alias=SM00181;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	747	780	1.3E-7	.	.	Name=EGF;Alias=SM00181;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	785	818	4.2E-5	.	.	Name=EGF;Alias=SM00181;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	823	856	5.2E-6	.	.	Name=EGF;Alias=SM00181;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	863	930	6.4E-16	.	.	Name=VWC;Alias=SM00214;Dbxref=InterPro:IPR001007;Ontology_term=GO:0005515;type=Domain;representative=true
+sp|Q9QXX0|JAG1_MOUSE	SMART	polypeptide_domain	863	930	9.2E-34	.	.	Name=VWC_out;Alias=SM00215;Dbxref=InterPro:IPR001007;Ontology_term=GO:0005515;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CDD	polypeptide_domain	629	665	1.28508E-8	.	.	Name=EGF_CA;Alias=cd00054;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CDD	polypeptide_domain	487	523	6.9291E-8	.	.	Name=EGF_CA;Alias=cd00054;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CDD	polypeptide_domain	374	410	3.26051E-7	.	.	Name=EGF_CA;Alias=cd00054;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CDD	polypeptide_domain	450	485	8.19701E-7	.	.	Name=EGF_CA;Alias=cd00054;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CDD	polypeptide_domain	820	855	8.27781E-7	.	.	Name=EGF_CA;Alias=cd00054;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CDD	polypeptide_domain	667	702	2.60907E-6	.	.	Name=EGF_CA;Alias=cd00054;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CDD	polypeptide_domain	296	334	2.90653E-6	.	.	Name=EGF_CA;Alias=cd00054;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CDD	polypeptide_domain	782	817	4.43291E-6	.	.	Name=EGF_CA;Alias=cd00054;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CDD	polypeptide_domain	525	560	5.39467E-6	.	.	Name=EGF_CA;Alias=cd00054;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CDD	polypeptide_domain	412	447	2.10907E-4	.	.	Name=EGF_CA;Alias=cd00054;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CDD	polypeptide_domain	750	780	3.58831E-4	.	.	Name=EGF_CA;Alias=cd00054;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CDD	polypeptide_domain	343	371	0.00114693	.	.	Name=EGF_CA;Alias=cd00054;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CDD	polypeptide_domain	714	740	0.00146728	.	.	Name=EGF_CA;Alias=cd00054;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PIRSR	polypeptide_region	418	574	1.3E-49	.	.	Name=PIRSR002279-1;Alias=PIRSR002279-1;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PIRSR	polypeptide_region	418	574	1.3E-49	.	.	Name=PIRSR002279-2;Alias=PIRSR002279-2;representative=false
+sp|Q9QXX0|JAG1_MOUSE	MobiDB-lite	polypeptide_region	1181	1218	.	.	.	Name=disorder_prediction;Alias=mobidb-lite;type=Region;representative=false
+sp|Q9QXX0|JAG1_MOUSE	MobiDB-lite	polypeptide_region	1188	1199	.	.	.	Name=disorder_prediction;Alias=mobidb-lite;type=Region;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE profiles	polypeptide_domain	185	229	16.864155	.	.	Name=DSL;Alias=PS51051;Dbxref=InterPro:IPR001774;Ontology_term=GO:0007154,GO:0016020;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE profiles	polypeptide_domain	230	263	9.566136	.	.	Name=EGF_3;Alias=PS50026;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE profiles	polypeptide_domain	296	334	22.966721	.	.	Name=EGF_3;Alias=PS50026;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE profiles	polypeptide_domain	336	372	18.620972	.	.	Name=EGF_3;Alias=PS50026;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE profiles	polypeptide_domain	374	410	22.495811	.	.	Name=EGF_3;Alias=PS50026;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE profiles	polypeptide_domain	412	448	19.414585	.	.	Name=EGF_3;Alias=PS50026;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE profiles	polypeptide_domain	450	485	22.48386	.	.	Name=EGF_3;Alias=PS50026;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE profiles	polypeptide_domain	487	523	23.707745	.	.	Name=EGF_3;Alias=PS50026;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE profiles	polypeptide_domain	525	561	21.733273	.	.	Name=EGF_3;Alias=PS50026;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE profiles	polypeptide_domain	586	627	12.802738	.	.	Name=EGF_3;Alias=PS50026;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE profiles	polypeptide_domain	629	665	24.563507	.	.	Name=EGF_3;Alias=PS50026;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE profiles	polypeptide_domain	667	703	21.867134	.	.	Name=EGF_3;Alias=PS50026;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE profiles	polypeptide_domain	705	741	16.883152	.	.	Name=EGF_3;Alias=PS50026;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE profiles	polypeptide_domain	744	780	19.560398	.	.	Name=EGF_3;Alias=PS50026;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE profiles	polypeptide_domain	782	818	20.530901	.	.	Name=EGF_3;Alias=PS50026;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PROSITE profiles	polypeptide_domain	820	856	21.178699	.	.	Name=EGF_3;Alias=PS50026;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PRINTS	polypeptide_motif	923	938	3.0E-45	.	.	Name=JAGGEDFAMILY;Alias=PR02059;Dbxref=InterPro:IPR026219;Ontology_term=GO:0005112,GO:0007219;type=Family;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PRINTS	polypeptide_motif	958	973	3.0E-45	.	.	Name=JAGGEDFAMILY;Alias=PR02059;Dbxref=InterPro:IPR026219;Ontology_term=GO:0005112,GO:0007219;type=Family;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PRINTS	polypeptide_motif	973	995	3.0E-45	.	.	Name=JAGGEDFAMILY;Alias=PR02059;Dbxref=InterPro:IPR026219;Ontology_term=GO:0005112,GO:0007219;type=Family;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PRINTS	polypeptide_motif	998	1017	3.0E-45	.	.	Name=JAGGEDFAMILY;Alias=PR02059;Dbxref=InterPro:IPR026219;Ontology_term=GO:0005112,GO:0007219;type=Family;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PRINTS	polypeptide_motif	1044	1061	3.0E-45	.	.	Name=JAGGEDFAMILY;Alias=PR02059;Dbxref=InterPro:IPR026219;Ontology_term=GO:0005112,GO:0007219;type=Family;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PRINTS	polypeptide_motif	1067	1091	3.0E-45	.	.	Name=JAGGEDFAMILY;Alias=PR02059;Dbxref=InterPro:IPR026219;Ontology_term=GO:0005112,GO:0007219;type=Family;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PRINTS	polypeptide_motif	487	498	2.3E-6	.	.	Name=EGFBLOOD;Alias=PR00010;type=Repeat;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PRINTS	polypeptide_motif	641	648	2.3E-6	.	.	Name=EGFBLOOD;Alias=PR00010;type=Repeat;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PRINTS	polypeptide_motif	649	659	2.3E-6	.	.	Name=EGFBLOOD;Alias=PR00010;type=Repeat;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PRINTS	polypeptide_motif	660	666	2.3E-6	.	.	Name=EGFBLOOD;Alias=PR00010;type=Repeat;representative=false
+sp|Q9QXX0|JAG1_MOUSE	Pfam	polypeptide_domain	32	185	9.0E-55	.	.	Name=MNNL;Alias=PF07657;Dbxref=InterPro:IPR011651;Ontology_term=GO:0007219,GO:0007275,GO:0016020;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	Pfam	polypeptide_domain	948	1058	2.6E-36	.	.	Name=JAG1;Alias=PF23575;Dbxref=InterPro:IPR056986;type=Domain;representative=true
+sp|Q9QXX0|JAG1_MOUSE	Pfam	polypeptide_domain	187	232	1.2E-16	.	.	Name=DSL;Alias=PF01414;Dbxref=InterPro:IPR001774;Ontology_term=GO:0007154,GO:0016020;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	Pfam	polypeptide_domain	433	682	3.4E-16	.	.	Name=EGF_TEN;Alias=PF25024;type=Domain;representative=true
+sp|Q9QXX0|JAG1_MOUSE	Pfam	polypeptide_domain	272	297	3.3E-7	.	.	Name=EGF_DL_JAG;Alias=PF21700;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	Pfam	polypeptide_domain	748	777	6.4E-5	.	.	Name=EGF;Alias=PF00008;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	Pfam	polypeptide_domain	378	408	1.1E-4	.	.	Name=EGF;Alias=PF00008;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	Pfam	polypeptide_domain	340	370	4.8E-4	.	.	Name=EGF;Alias=PF00008;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	Pfam	polypeptide_domain	786	815	0.025	.	.	Name=EGF;Alias=PF00008;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	Pfam	polypeptide_domain	300	332	0.19	.	.	Name=EGF;Alias=PF00008;Dbxref=InterPro:IPR000742;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	Pfam	polypeptide_domain	829	849	0.0055	.	.	Name=hEGF;Alias=PF12661;Dbxref=InterPro:IPR013032;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	Pfam	polypeptide_domain	714	735	2.2	.	.	Name=hEGF;Alias=PF12661;Dbxref=InterPro:IPR013032;type=Domain;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SUPERFAMILY	polypeptide_domain	438	567	1.19E-14	.	.	Name=SSF57184;Dbxref=InterPro:IPR009030;type=Homologous_superfamily;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SUPERFAMILY	polypeptide_domain	324	454	2.35E-11	.	.	Name=SSF57184;Dbxref=InterPro:IPR009030;type=Homologous_superfamily;representative=true
+sp|Q9QXX0|JAG1_MOUSE	SUPERFAMILY	polypeptide_domain	654	786	7.06E-9	.	.	Name=SSF57184;Dbxref=InterPro:IPR009030;type=Homologous_superfamily;representative=true
+sp|Q9QXX0|JAG1_MOUSE	SUPERFAMILY	polypeptide_domain	629	671	2.87E-12	.	.	Name=SSF57196;type=Homologous_superfamily;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SUPERFAMILY	polypeptide_domain	782	824	1.31E-9	.	.	Name=SSF57196;type=Homologous_superfamily;representative=true
+sp|Q9QXX0|JAG1_MOUSE	SUPERFAMILY	polypeptide_domain	820	856	1.39E-9	.	.	Name=SSF57196;type=Homologous_superfamily;representative=false
+sp|Q9QXX0|JAG1_MOUSE	SUPERFAMILY	polypeptide_domain	296	335	1.41E-5	.	.	Name=SSF57196;type=Homologous_superfamily;representative=false
+sp|Q9QXX0|JAG1_MOUSE	PANTHER	polypeptide_region	129	798	3.7E-151	.	.	Name=PTHR12916;Ontology_term=GO:0005112,GO:0007219;type=Family;representative=true
+sp|Q9QXX0|JAG1_MOUSE	CATH-Gene3D	polypeptide_domain	32	187	1.4E-62	.	.	Name=G3DSA:2.60.40.3510;type=Homologous_superfamily;representative=true
+sp|Q9QXX0|JAG1_MOUSE	CATH-Gene3D	polypeptide_domain	188	233	1.3E-19	.	.	Name=G3DSA:2.10.25.140;type=Homologous_superfamily;representative=true
+sp|Q9QXX0|JAG1_MOUSE	CATH-Gene3D	polypeptide_domain	234	298	5.9E-16	.	.	Name=G3DSA:2.10.25.10;type=Homologous_superfamily;representative=true
+sp|Q9QXX0|JAG1_MOUSE	CATH-Gene3D	polypeptide_domain	303	338	3.4E-10	.	.	Name=G3DSA:2.10.25.10;type=Homologous_superfamily;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-Gene3D	polypeptide_domain	339	374	9.4E-12	.	.	Name=G3DSA:2.10.25.10;type=Homologous_superfamily;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-Gene3D	polypeptide_domain	414	454	4.7E-12	.	.	Name=G3DSA:2.10.25.10;type=Homologous_superfamily;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-Gene3D	polypeptide_domain	455	489	4.8E-12	.	.	Name=G3DSA:2.10.25.10;type=Homologous_superfamily;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-Gene3D	polypeptide_domain	375	413	2.4E-13	.	.	Name=G3DSA:2.10.25.10;type=Homologous_superfamily;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-Gene3D	polypeptide_domain	526	570	1.8E-11	.	.	Name=G3DSA:2.10.25.10;type=Homologous_superfamily;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-Gene3D	polypeptide_domain	705	745	1.8E-9	.	.	Name=G3DSA:2.10.25.10;type=Homologous_superfamily;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-Gene3D	polypeptide_domain	821	860	3.5E-13	.	.	Name=G3DSA:2.10.25.10;type=Homologous_superfamily;representative=true
+sp|Q9QXX0|JAG1_MOUSE	CATH-Gene3D	polypeptide_domain	490	525	3.3E-16	.	.	Name=G3DSA:2.10.25.10;type=Homologous_superfamily;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-Gene3D	polypeptide_domain	784	820	2.5E-12	.	.	Name=G3DSA:2.10.25.10;type=Homologous_superfamily;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-Gene3D	polypeptide_domain	592	629	3.1E-5	.	.	Name=G3DSA:2.10.25.10;type=Homologous_superfamily;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-Gene3D	polypeptide_domain	630	666	3.8E-16	.	.	Name=G3DSA:2.10.25.10;type=Homologous_superfamily;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-Gene3D	polypeptide_domain	667	704	5.0E-11	.	.	Name=G3DSA:2.10.25.10;type=Homologous_superfamily;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-Gene3D	polypeptide_domain	746	783	3.5E-10	.	.	Name=G3DSA:2.10.25.10;type=Homologous_superfamily;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-FunFam	polypeptide_domain	32	187	7.9E-100	.	.	Name=G3DSA:2.60.40.3510:FF:000001;type=Region;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-FunFam	polypeptide_domain	188	233	2.2E-23	.	.	Name=G3DSA:2.10.25.140:FF:000001;type=Region;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-FunFam	polypeptide_domain	234	296	8.0E-27	.	.	Name=G3DSA:2.10.25.10:FF:000018;type=Region;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-FunFam	polypeptide_domain	297	338	1.9E-21	.	.	Name=G3DSA:2.10.25.10:FF:000148;type=Region;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-FunFam	polypeptide_domain	339	374	1.9E-13	.	.	Name=G3DSA:2.10.25.10:FF:000007;type=Region;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-FunFam	polypeptide_domain	376	412	7.0E-15	.	.	Name=G3DSA:2.10.25.10:FF:000007;type=Region;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-FunFam	polypeptide_domain	669	705	2.4E-16	.	.	Name=G3DSA:2.10.25.10:FF:000007;type=Region;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-FunFam	polypeptide_domain	707	743	3.5E-14	.	.	Name=G3DSA:2.10.25.10:FF:000007;type=Region;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-FunFam	polypeptide_domain	414	450	1.0E-13	.	.	Name=G3DSA:2.10.25.10:FF:000146;type=Region;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-FunFam	polypeptide_domain	455	489	2.3E-24	.	.	Name=G3DSA:2.10.25.10:FF:000229;type=Region;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-FunFam	polypeptide_domain	490	526	4.0E-15	.	.	Name=G3DSA:2.10.25.10:FF:000143;type=Region;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-FunFam	polypeptide_domain	527	562	1.4E-22	.	.	Name=G3DSA:2.10.25.10:FF:000181;type=Region;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-FunFam	polypeptide_domain	630	667	5.8E-16	.	.	Name=G3DSA:2.10.25.10:FF:000122;type=Region;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-FunFam	polypeptide_domain	747	783	8.6E-15	.	.	Name=G3DSA:2.10.25.10:FF:000431;type=Region;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-FunFam	polypeptide_domain	784	821	6.3E-17	.	.	Name=G3DSA:2.10.25.10:FF:000061;type=Region;representative=false
+sp|Q9QXX0|JAG1_MOUSE	CATH-FunFam	polypeptide_domain	822	859	1.2E-19	.	.	Name=G3DSA:2.10.25.10:FF:000117;type=Region;representative=false
