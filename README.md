@@ -99,7 +99,8 @@ The calls must come from proteins translated from the same gene models. Each
 call names its protein by the transcript ID, the CDS `protein_id` or the CDS ID,
 which covers `gffread -y`, NCBI and Ensembl protein FASTA. Where HMMER hits on
 one protein overlap by more than half, the one with the lowest E-value is kept,
-as `pfam_scan` and InterProScan do.
+whatever their Pfam clans; `pfam_scan` and InterProScan resolve only hits in one
+clan.
 
 ## Output
 

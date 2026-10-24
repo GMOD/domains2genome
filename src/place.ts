@@ -44,16 +44,23 @@ export async function placeProteinFeatures(
   const kept = sources?.map(s => s.toLowerCase())
   const isProtein = (id: string) => findTranscript(lookup, id) !== undefined
   const parsed: ProteinCall[] = []
+  const skipped = new Set<string>()
   let skippedSource = 0
   for await (const line of readLines(calls)) {
     const call = parseCall(line, isProtein)
     if (call) {
       if (kept && !kept.includes(call.source.toLowerCase())) {
         skippedSource++
+        skipped.add(call.source)
       } else {
         parsed.push(call)
       }
     }
+  }
+  if (parsed.length === 0 && skippedSource > 0) {
+    throw new Error(
+      `No call in ${calls} comes from ${sources?.join(', ')}; its calls come from ${[...skipped].join(', ')}`,
+    )
   }
 
   const rows: { refName: string; start: number; line: string }[] = []

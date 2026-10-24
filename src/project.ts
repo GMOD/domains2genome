@@ -221,8 +221,9 @@ export function parseCall(
 /**
  * HMMER reports every family that clears its threshold, so related families
  * (SH3_1, SH3_2, SH3_9) stack on one stretch of protein. Where two hits on a
- * protein share more than half the shorter one, the lower E-value wins, as
- * pfam_scan and InterProScan resolve them. Calls from InterProScan pass
+ * protein share more than half the shorter one, the lower E-value wins,
+ * whatever their Pfam clans: pfam_scan and InterProScan resolve only hits in
+ * one clan, which needs Pfam's clan file. Calls from InterProScan pass
  * through, already resolved.
  */
 export function bestOfOverlappingHmmerHits(calls: ProteinCall[]) {

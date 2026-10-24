@@ -66,6 +66,17 @@ test('writes BED12 a block per exon to stdout, warnings to stderr', () => {
   expect(r.stderr).toContain('nobody')
 })
 
+test('a --source matching no call names the sources the calls come from', () => {
+  const r = run(['genes.gff3', 'calls.tsv', '--source', 'gene3d'], {
+    'genes.gff3': gff3,
+    'calls.tsv': calls,
+  })
+  expect(r.status).not.toBe(0)
+  expect(r.stderr).toContain(
+    'No call in calls.tsv comes from gene3d; its calls come from Pfam, SMART',
+  )
+})
+
 test('the 1.x flags still run, and --out writes a file', () => {
   const r = run(
     [
