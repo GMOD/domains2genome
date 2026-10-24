@@ -85,12 +85,14 @@ export async function placeProteinFeatures(
       }`,
     )
   }
-  rows.sort((a, b) =>
-    a.refName === b.refName
-      ? a.start - b.start
-      : a.refName < b.refName
-        ? -1
-        : 1,
+  // the whole line breaks a tie, so the same calls in any order (hmmscan
+  // chunks concatenated, say) write the same file
+  const compare = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0)
+  rows.sort(
+    (a, b) =>
+      compare(a.refName, b.refName) ||
+      a.start - b.start ||
+      compare(a.line, b.line),
   )
   return {
     lines: rows.map(r => r.line),

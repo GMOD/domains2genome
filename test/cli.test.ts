@@ -91,3 +91,17 @@ test('refuses calls that match no transcript', () => {
   expect(r.status).toBe(1)
   expect(r.stderr).toContain('nobody')
 })
+
+test('the same calls in any order write the same BED', () => {
+  const rows = calls.split('\n')
+  const forward = run(['genes.gff3', 'calls.tsv'], {
+    'genes.gff3': gff3,
+    'calls.tsv': rows.join('\n'),
+  })
+  const reversed = run(['genes.gff3', 'calls.tsv'], {
+    'genes.gff3': gff3,
+    'calls.tsv': rows.toReversed().join('\n'),
+  })
+  expect(forward.stdout.split('\n').length).toBeGreaterThan(3)
+  expect(reversed.stdout).toBe(forward.stdout)
+})
