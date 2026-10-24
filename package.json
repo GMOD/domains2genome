@@ -1,7 +1,7 @@
 {
   "name": "domains2genome",
   "description": "Place InterProScan or HMMER protein domain calls on the genome as BED12, a block per exon",
-  "version": "0.0.0",
+  "version": "2.0.0",
   "packageManager": "pnpm@11.15.1",
   "repository": {
     "type": "git",
