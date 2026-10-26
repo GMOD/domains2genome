@@ -1,3 +1,9 @@
+## [2.3.0](https://github.com/GMOD/domains2genome/compare/v2.2.0...v2.3.0) (2026-10-26)
+
+### Other Changes
+
+- Read GFF3 through gff-nostream, the parser JBrowse reads gene tracks with ([68fef57](https://github.com/GMOD/domains2genome/commit/68fef5756cdc13acc6879e4d7f28afe9b60f5eea))
+
 ## [2.2.0](https://github.com/GMOD/domains2genome/compare/v2.1.0...v2.2.0) (2026-10-26)
 
 ### Other Changes
