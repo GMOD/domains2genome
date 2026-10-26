@@ -109,9 +109,11 @@ After the twelve BED columns come `accession`, `description`, `source`,
 `transcript`, `proteinStart`, `proteinEnd` and `evalue`. The score column is ten
 times −log10(E-value), capped at 1000.
 
-- `transcript` is the GFF3 `Name` a gene track labels the transcript with, or
-  its ID where two coding transcripts share a Name or it has none. From a GTF it
-  is the `transcript_id`.
+- `transcript` is the label JBrowse gives the transcript by default: its GFF3
+  `Name`, else its `ID`, read with the same parser
+  ([@gmod/gff-nostream](https://github.com/GMOD/gff-nostream)). Where two coding
+  transcripts would write one label, each writes its ID. From a GTF it is the
+  `transcript_id`, as JBrowse labels GTF transcripts.
 
 IGV, the UCSC browser and JBrowse all draw BED12. In JBrowse, a multi-row
 display with `rows: 'transcript'` draws each transcript's domains on a row of

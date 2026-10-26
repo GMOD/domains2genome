@@ -2,13 +2,14 @@ import { createReadStream } from 'node:fs'
 import { createInterface } from 'node:readline'
 import { createGunzip } from 'node:zlib'
 
+import { getAttribute, parseFeatureLazy } from '@gmod/gff-nostream'
 import { proteinRangeToGenome } from 'g2p_mapper'
 
 import type { Feat } from 'g2p_mapper'
 
 export interface CodingTranscript extends Feat {
   id: string
-  /** The GFF3 `Name` a gene track labels the transcript with, or its ID where no Name is unique to it */
+  /** JBrowse's default label for the transcript, its `Name` else its ID, or its ID where another transcript writes that Name */
   name: string
   strand: 1 | -1
   subfeatures: Feat[]
@@ -31,39 +32,48 @@ export async function* readLines(file: string) {
   yield* createInterface({ input, crlfDelay: Infinity })
 }
 
-// a bare `%`, as in `Note=50% identity`, stays as written
-const percentDecode = (v: string) =>
-  v.replaceAll(/(%[0-9A-Fa-f]{2})+/g, s => {
-    try {
-      return decodeURIComponent(s)
-    } catch {
-      return s
-    }
-  })
-
-function gff3Attributes(column: string) {
-  const attrs = new Map<string, string[]>()
-  for (const pair of column.split(';')) {
-    const eq = pair.indexOf('=')
-    if (eq > 0) {
-      attrs.set(
-        pair.slice(0, eq).trim(),
-        pair
-          .slice(eq + 1)
-          .split(',')
-          .map(v => percentDecode(v.trim())),
-      )
-    }
-  }
-  return attrs
+interface AnnotationRow {
+  type: string | null
+  refName: string
+  start: number
+  end: number
+  strand: 1 | -1
+  phase: number
+  attribute: (key: string) => string[]
 }
 
-function gtfAttributes(column: string) {
-  const attrs = new Map<string, string[]>()
-  for (const m of column.matchAll(/(\S+)\s+"([^"]*)"/g)) {
-    attrs.set(m[1]!, [m[2]!])
+const asList = (v: string | string[] | undefined) =>
+  v === undefined ? [] : Array.isArray(v) ? v : [v]
+
+// gff-nostream is the parser JBrowse reads the gene track with, so a tag's
+// case, escapes and multiple values come out as the gene track's labels do
+function gff3Row(line: string): AnnotationRow {
+  const feature = parseFeatureLazy(line)
+  return {
+    type: feature.type,
+    refName: feature.refName,
+    start: feature.start,
+    end: feature.end,
+    strand: feature.strand === -1 ? -1 : 1,
+    phase: feature.phase ?? 0,
+    attribute: key => asList(getAttribute(feature, key)),
   }
-  return attrs
+}
+
+function gtfRow(cols: string[]): AnnotationRow {
+  const attrs = new Map<string, string>()
+  for (const m of cols[8]!.matchAll(/(\S+)\s+"([^"]*)"/g)) {
+    attrs.set(m[1]!.toLowerCase(), m[2]!)
+  }
+  return {
+    type: cols[2]!,
+    refName: cols[0]!,
+    start: +cols[3]! - 1,
+    end: +cols[4]!,
+    strand: cols[6] === '-' ? -1 : 1,
+    phase: cols[7] === '.' ? 0 : +cols[7]!,
+    attribute: key => asList(attrs.get(key)),
+  }
 }
 
 const withoutPrefix = (id: string) =>
@@ -98,29 +108,26 @@ export async function readCodingTranscripts(file: string) {
       continue
     }
     const isGtf = /^\s*\w+\s+"/.test(cols[8]!)
-    if (cols[2] !== 'CDS') {
-      if (!isGtf) {
-        const attrs = gff3Attributes(cols[8]!)
-        const id = attrs.get('ID')?.[0]
-        const name = attrs.get('Name')?.[0]
-        if (id && name) {
-          gff3Names.set(id, name)
-        }
+    const row = isGtf ? gtfRow(cols) : gff3Row(line)
+    if (row.type !== 'CDS') {
+      const [id] = row.attribute('id')
+      const [name] = row.attribute('name')
+      if (!isGtf && id && name) {
+        gff3Names.set(id, name)
       }
       continue
     }
-    const attrs = isGtf ? gtfAttributes(cols[8]!) : gff3Attributes(cols[8]!)
-    const parents = attrs.get(isGtf ? 'transcript_id' : 'Parent') ?? []
+    const parents = row.attribute(isGtf ? 'transcript_id' : 'parent')
     const aliases = [
-      ...(attrs.get('protein_id') ?? []),
-      ...(isGtf ? [] : (attrs.get('ID') ?? [])),
+      ...row.attribute('protein_id'),
+      ...(isGtf ? [] : row.attribute('id')),
     ]
     const cds = {
-      refName: cols[0]!,
-      start: +cols[3]! - 1,
-      end: +cols[4]!,
+      refName: row.refName,
+      start: row.start,
+      end: row.end,
       type: 'CDS',
-      phase: cols[7] === '.' ? 0 : +cols[7]!,
+      phase: row.phase,
     }
     for (const parent of parents) {
       const entry = byTranscript.get(parent) ?? {
@@ -130,7 +137,7 @@ export async function readCodingTranscripts(file: string) {
           refName: cds.refName,
           start: cds.start,
           end: cds.end,
-          strand: cols[6] === '-' ? -1 : 1,
+          strand: row.strand,
           subfeatures: [],
         },
         aliases: [],
@@ -184,16 +191,18 @@ export function findTranscript(
  * in `Name` and the description in `signature_desc`. A `polypeptide` row is
  * the protein itself.
  */
-function interProGffCall(cols: string[]): ProteinCall | undefined {
-  const [protein, source, type, start, end, score, , , column9] = cols
+function interProGffCall(
+  line: string,
+  cols: string[],
+): ProteinCall | undefined {
+  const [protein, source, type, start, end, score] = cols
   if (type === 'polypeptide') {
     return undefined
   }
-  const attrs = gff3Attributes(column9!)
-  const first = (key: string) => attrs.get(key)?.[0]
-  const name = first('Name') ?? ''
-  const alias = first('Alias')
-  const description = first('signature_desc') ?? ''
+  const { attribute } = gff3Row(line)
+  const [name = ''] = attribute('name')
+  const [alias] = attribute('alias')
+  const [description = ''] = attribute('signature_desc')
   return {
     protein: protein!,
     start: +start!,
@@ -220,7 +229,7 @@ export function parseCall(
   }
   const tabs = line.split('\t')
   if (tabs.length === 9) {
-    return interProGffCall(tabs)
+    return interProGffCall(line, tabs)
   }
   if (tabs.length >= 11) {
     const [protein, , , source, accession, description, start, end, evalue] =

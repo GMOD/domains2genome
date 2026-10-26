@@ -96,6 +96,25 @@ test('a bare % in an attribute stays as written', async () => {
   expect(findTranscript(lookup, 't')!.name).toBe('T,1')
 })
 
+test('reads tags in any case, as a gene track does', async () => {
+  const { lookup } = await readCodingTranscripts(
+    tmpFile(
+      'genes.gff3',
+      [
+        'ctgA\t.\tmRNA\t1\t30\t.\t-\t.\tid=t;name=T1',
+        'ctgA\t.\tCDS\t1\t30\t.\t-\t0\tparent=t;protein_id=P1',
+        '',
+      ].join('\n'),
+    ),
+  )
+  const transcript = findTranscript(lookup, 'P1')!
+  expect(transcript.name).toBe('T1')
+  expect(transcript.strand).toBe(-1)
+  expect(transcript.subfeatures).toEqual([
+    { refName: 'ctgA', start: 0, end: 30, type: 'CDS', phase: 0 },
+  ])
+})
+
 test('reads a GTF', async () => {
   const { lookup } = await readCodingTranscripts(
     tmpFile(
