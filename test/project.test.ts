@@ -243,3 +243,21 @@ test('the BED score is ten times -log10(E), within 0..1000', () => {
   expect(evalueScore('2')).toBe(0)
   expect(evalueScore('-')).toBe(0)
 })
+
+test('an ID as written beats another ID with its version dropped', async () => {
+  const { lookup } = await readCodingTranscripts(
+    tmpFile(
+      'genes.gff3',
+      [
+        'c\t.\tCDS\t1\t30\t.\t+\t0\tParent=foo',
+        'c\t.\tCDS\t101\t130\t.\t+\t0\tParent=foo.1',
+        'c\t.\tCDS\t201\t230\t.\t+\t0\tParent=AT1G01010.1',
+        'c\t.\tCDS\t301\t330\t.\t+\t0\tParent=AT1G01010.2',
+      ].join('\n'),
+    ),
+  )
+  expect(findTranscript(lookup, 'foo')!.id).toBe('foo')
+  expect(findTranscript(lookup, 'foo.1')!.id).toBe('foo.1')
+  expect(findTranscript(lookup, 'AT1G01010.2')!.id).toBe('AT1G01010.2')
+  expect(findTranscript(lookup, 'AT1G01010')).toBeUndefined()
+})

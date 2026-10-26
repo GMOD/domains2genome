@@ -5,6 +5,7 @@ import { createGunzip } from 'node:zlib'
 import { getAttribute, parseFeatureLazy } from '@gmod/gff-nostream'
 import { proteinRangeToGenome } from 'g2p_mapper'
 
+import type { Readable } from 'node:stream'
 import type { Feat } from 'g2p_mapper'
 
 export interface CodingTranscript extends Feat {
@@ -28,7 +29,12 @@ export interface ProteinCall {
 
 export async function* readLines(file: string) {
   const raw = createReadStream(file)
-  const input = /\.b?gz$/i.test(file) ? raw.pipe(createGunzip()) : raw
+  let input: Readable = raw
+  if (/\.b?gz$/i.test(file)) {
+    const gunzip = createGunzip()
+    raw.on('error', (e: Error) => gunzip.destroy(e))
+    input = raw.pipe(gunzip)
+  }
   yield* createInterface({ input, crlfDelay: Infinity })
 }
 
@@ -159,13 +165,29 @@ export async function readCodingTranscripts(file: string) {
       nameCounts.set(written, (nameCounts.get(written) ?? 0) + 1)
     }
   }
+  // an ID as written beats one with its prefix or version dropped, and a
+  // dropped form two transcripts share (AT1G01010 from .1 and .2) is neither's
   const lookup = new Map<string, CodingTranscript>()
+  const loose = new Map<string, CodingTranscript | null>()
   for (const { transcript, aliases } of byTranscript.values()) {
     const name = gff3Names.get(transcript.id)
     if (name && nameCounts.get(name) === 1) {
       transcript.name = name
     }
-    for (const key of proteinKeys([transcript.id, ...aliases])) {
+    const ids = [transcript.id, ...aliases]
+    for (const id of ids) {
+      lookup.set(id, transcript)
+    }
+    for (const key of proteinKeys(ids)) {
+      const claimed = loose.get(key)
+      loose.set(
+        key,
+        claimed === undefined || claimed === transcript ? transcript : null,
+      )
+    }
+  }
+  for (const [key, transcript] of loose) {
+    if (transcript && !lookup.has(key)) {
       lookup.set(key, transcript)
     }
   }
