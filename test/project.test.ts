@@ -28,6 +28,8 @@ test('reads CDS parts and matches a protein by any of its names', async () => {
   expect(transcripts).toBe(3)
   const ncbi = findTranscript(lookup, 'XP_1.1')!
   expect(ncbi.id).toBe('rna-XM_1.1')
+  expect(ncbi.name).toBe('XM_1.1')
+  expect(findTranscript(lookup, 'minus')!.name).toBe('minus')
   // residues 8..14 are CDS bases 21..42: 9 in the first part, 12 in the second
   expect(projectResidues(ncbi, 8, 14)).toEqual([
     { start: 121, end: 130 },
@@ -44,6 +46,23 @@ test('reads CDS parts and matches a protein by any of its names', async () => {
     { start: 11, end: 14 },
   ])
   expect(findTranscript(lookup, 'XP_2')).toBeUndefined()
+})
+
+test('a Name two transcripts share falls back to their IDs', async () => {
+  const { lookup } = await readCodingTranscripts(
+    tmpFile(
+      'genes.gff3',
+      [
+        'ctgA\t.\tmRNA\t1\t30\t.\t+\t.\tID=t1;Name=GENE',
+        'ctgA\t.\tmRNA\t1\t30\t.\t+\t.\tID=t2;Name=GENE',
+        'ctgA\t.\tCDS\t1\t30\t.\t+\t0\tParent=t1',
+        'ctgA\t.\tCDS\t1\t30\t.\t+\t0\tParent=t2',
+        '',
+      ].join('\n'),
+    ),
+  )
+  expect(findTranscript(lookup, 't1')!.name).toBe('t1')
+  expect(findTranscript(lookup, 't2')!.name).toBe('t2')
 })
 
 test('reads a GTF', async () => {

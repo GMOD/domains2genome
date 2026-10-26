@@ -43,7 +43,7 @@ const kinase = [
   'PF00069',
   'Protein kinase domain',
   'Pfam',
-  'rna-XM_1.1',
+  'XM_1.1',
   8,
   14,
   '1E-5',

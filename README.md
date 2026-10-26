@@ -109,9 +109,13 @@ After the twelve BED columns come `accession`, `description`, `source`,
 `transcript`, `proteinStart`, `proteinEnd` and `evalue`. The score column is ten
 times −log10(E-value), capped at 1000.
 
-IGV, the UCSC browser and JBrowse all draw BED12. In JBrowse 5, a gene track
-whose `proteinFeatures` names the BED's track draws each domain on the isoform
-it was called on, as the
+- `transcript` is the GFF3 `Name` a gene track labels the transcript with, or
+  its ID where two coding transcripts share a Name or it has none. From a GTF it
+  is the `transcript_id`.
+
+IGV, the UCSC browser and JBrowse all draw BED12. In JBrowse, a multi-row
+display with `rows: 'transcript'` draws each transcript's domains on a row of
+its own, as the
 [protein domains tutorial](https://jbrowse.org/jb2/docs/tutorials/protein_domains/)
 shows.
 

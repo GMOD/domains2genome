@@ -8,6 +8,8 @@ import type { Feat } from 'g2p_mapper'
 
 export interface CodingTranscript extends Feat {
   id: string
+  /** The GFF3 `Name` a gene track labels the transcript with, or its ID where no Name is unique to it */
+  name: string
   strand: 1 | -1
   subfeatures: Feat[]
 }
@@ -79,12 +81,24 @@ export async function readCodingTranscripts(file: string) {
     string,
     { transcript: CodingTranscript; aliases: string[] }
   >()
+  const gff3Names = new Map<string, string>()
   for await (const line of readLines(file)) {
     const cols = line.split('\t')
-    if (line.startsWith('#') || cols.length < 9 || cols[2] !== 'CDS') {
+    if (line.startsWith('#') || cols.length < 9 || cols[2] === 'exon') {
       continue
     }
     const isGtf = /^\s*\w+\s+"/.test(cols[8]!)
+    if (cols[2] !== 'CDS') {
+      if (!isGtf) {
+        const attrs = gff3Attributes(cols[8]!)
+        const id = attrs.get('ID')?.[0]
+        const name = attrs.get('Name')?.[0]
+        if (id && name) {
+          gff3Names.set(id, name)
+        }
+      }
+      continue
+    }
     const attrs = isGtf ? gtfAttributes(cols[8]!) : gff3Attributes(cols[8]!)
     const parents = attrs.get(isGtf ? 'transcript_id' : 'Parent') ?? []
     const aliases = [
@@ -102,6 +116,7 @@ export async function readCodingTranscripts(file: string) {
       const entry = byTranscript.get(parent) ?? {
         transcript: {
           id: parent,
+          name: parent,
           refName: cds.refName,
           start: cds.start,
           end: cds.end,
@@ -118,8 +133,19 @@ export async function readCodingTranscripts(file: string) {
       entry.aliases.push(...aliases)
     }
   }
+  const nameCounts = new Map<string, number>()
+  for (const id of byTranscript.keys()) {
+    const name = gff3Names.get(id)
+    if (name) {
+      nameCounts.set(name, (nameCounts.get(name) ?? 0) + 1)
+    }
+  }
   const lookup = new Map<string, CodingTranscript>()
   for (const { transcript, aliases } of byTranscript.values()) {
+    const name = gff3Names.get(transcript.id)
+    if (name && nameCounts.get(name) === 1) {
+      transcript.name = name
+    }
     for (const key of proteinKeys([transcript.id, ...aliases])) {
       lookup.set(key, transcript)
     }
@@ -324,7 +350,7 @@ export function bedLine(
     tsvField(call.accession),
     tsvField(call.description),
     tsvField(call.source),
-    transcript.id,
+    tsvField(transcript.name),
     call.start,
     call.end,
     call.evalue,
