@@ -65,6 +65,37 @@ test('a Name two transcripts share falls back to their IDs', async () => {
   expect(findTranscript(lookup, 't2')!.name).toBe('t2')
 })
 
+test("a Name equal to another transcript's ID falls back to the ID", async () => {
+  const { lookup } = await readCodingTranscripts(
+    tmpFile(
+      'genes.gff3',
+      [
+        'ctgA\t.\tmRNA\t1\t30\t.\t+\t.\tID=A;Name=B',
+        'ctgA\t.\tCDS\t1\t30\t.\t+\t0\tParent=A',
+        'ctgA\t.\tCDS\t1\t30\t.\t+\t0\tParent=B',
+        '',
+      ].join('\n'),
+    ),
+  )
+  expect(findTranscript(lookup, 'A')!.name).toBe('A')
+  expect(findTranscript(lookup, 'B')!.name).toBe('B')
+})
+
+test('a bare % in an attribute stays as written', async () => {
+  const { lookup } = await readCodingTranscripts(
+    tmpFile(
+      'genes.gff3',
+      [
+        'ctgA\t.\tgene\t1\t30\t.\t+\t.\tID=g;Note=50% identity',
+        'ctgA\t.\tmRNA\t1\t30\t.\t+\t.\tID=t;Parent=g;Name=T%2C1',
+        'ctgA\t.\tCDS\t1\t30\t.\t+\t0\tParent=t',
+        '',
+      ].join('\n'),
+    ),
+  )
+  expect(findTranscript(lookup, 't')!.name).toBe('T,1')
+})
+
 test('reads a GTF', async () => {
   const { lookup } = await readCodingTranscripts(
     tmpFile(

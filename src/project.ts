@@ -31,6 +31,16 @@ export async function* readLines(file: string) {
   yield* createInterface({ input, crlfDelay: Infinity })
 }
 
+// a bare `%`, as in `Note=50% identity`, stays as written
+const percentDecode = (v: string) =>
+  v.replaceAll(/(%[0-9A-Fa-f]{2})+/g, s => {
+    try {
+      return decodeURIComponent(s)
+    } catch {
+      return s
+    }
+  })
+
 function gff3Attributes(column: string) {
   const attrs = new Map<string, string[]>()
   for (const pair of column.split(';')) {
@@ -41,7 +51,7 @@ function gff3Attributes(column: string) {
         pair
           .slice(eq + 1)
           .split(',')
-          .map(v => decodeURIComponent(v.trim())),
+          .map(v => percentDecode(v.trim())),
       )
     }
   }
@@ -133,11 +143,13 @@ export async function readCodingTranscripts(file: string) {
       entry.aliases.push(...aliases)
     }
   }
+  // a Name another transcript writes, as its Name or its ID, is not the
+  // transcript's alone
   const nameCounts = new Map<string, number>()
   for (const id of byTranscript.keys()) {
     const name = gff3Names.get(id)
-    if (name) {
-      nameCounts.set(name, (nameCounts.get(name) ?? 0) + 1)
+    for (const written of name && name !== id ? [id, name] : [id]) {
+      nameCounts.set(written, (nameCounts.get(written) ?? 0) + 1)
     }
   }
   const lookup = new Map<string, CodingTranscript>()
