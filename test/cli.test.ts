@@ -116,3 +116,17 @@ test('the same calls in any order write the same BED', () => {
   expect(forward.stdout.split('\n').length).toBeGreaterThan(3)
   expect(reversed.stdout).toBe(forward.stdout)
 })
+
+test.each([
+  [
+    ['genes.gff3', 'calls.tsv', '--soruce', 'Pfam'],
+    "Unknown option '--soruce'",
+  ],
+  [['genes.gff3', 'calls.tsv', '--out', 'no/such/dir/o.bed'], 'ENOENT'],
+  [['genes.gff3', 'missing.tsv.gz'], 'ENOENT'],
+])('%j fails with one line of error, not a stack trace', (args, message) => {
+  const r = run(args, { 'genes.gff3': gff3, 'calls.tsv': calls })
+  expect(r.status).toBe(1)
+  expect(r.stderr).toMatch(new RegExp(`^Error: .*${message}`))
+  expect(r.stderr).not.toContain('    at ')
+})

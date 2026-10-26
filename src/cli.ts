@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { createWriteStream } from 'node:fs'
+import { writeFile } from 'node:fs/promises'
 import { parseArgs } from 'node:util'
 
 import { placeProteinFeatures, placementWarnings } from './place.ts'
@@ -25,36 +25,33 @@ The calls name each protein by its transcript ID, its CDS protein_id, or its
 CDS ID, as gffread -y, NCBI and Ensembl protein FASTA all do. Where HMMER hits
 on one protein overlap by more than half, the lowest E-value is kept.`
 
-const { values, positionals } = parseArgs({
-  allowPositionals: true,
-  options: {
-    out: { type: 'string' },
-    source: { type: 'string' },
-    help: { type: 'boolean', short: 'h' },
-    // the 1.x spelling, kept so existing commands still run
-    genomeGFF: { type: 'string' },
-    interproGFF: { type: 'string' },
-  },
-})
+async function main() {
+  const { values, positionals } = parseArgs({
+    allowPositionals: true,
+    options: {
+      out: { type: 'string' },
+      source: { type: 'string' },
+      help: { type: 'boolean', short: 'h' },
+      // the 1.x spelling, kept so existing commands still run
+      genomeGFF: { type: 'string' },
+      interproGFF: { type: 'string' },
+    },
+  })
+  const annotation = positionals[0] ?? values.genomeGFF
+  const calls = positionals[1] ?? values.interproGFF
+  if (values.help || !annotation || !calls) {
+    console.error(usage)
+    process.exit(values.help ? 0 : 1)
+  }
 
-const annotation = positionals[0] ?? values.genomeGFF
-const calls = positionals[1] ?? values.interproGFF
-if (values.help || !annotation || !calls) {
-  console.error(usage)
-  process.exit(values.help ? 0 : 1)
-}
-
-async function main(annotation: string, calls: string) {
   const placed = await placeProteinFeatures(annotation, calls, {
     sources: values.source?.split(',').map(s => s.trim()),
   })
-  const out = values.out ? createWriteStream(values.out) : process.stdout
-  out.write(`#${BED_HEADER.join('\t')}\n`)
-  for (const line of placed.lines) {
-    out.write(`${line}\n`)
-  }
+  const bed = [`#${BED_HEADER.join('\t')}`, ...placed.lines, ''].join('\n')
   if (values.out) {
-    out.end()
+    await writeFile(values.out, bed)
+  } else {
+    process.stdout.write(bed)
   }
   for (const warning of placementWarnings(placed)) {
     console.warn(`Warning: ${warning}`)
@@ -68,7 +65,7 @@ async function main(annotation: string, calls: string) {
   )
 }
 
-main(annotation, calls).catch((e: unknown) => {
+main().catch((e: unknown) => {
   console.error(`Error: ${e instanceof Error ? e.message : String(e)}`)
   process.exit(1)
 })
