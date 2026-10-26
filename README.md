@@ -6,8 +6,9 @@ can draw them over the exons that encode them.
 - **In:** gene models (GFF3 or GTF) and domain calls on their proteins
   (InterProScan TSV or GFF3, or HMMER `--domtblout`)
 - **Out:** BED12, one row per domain, a block per exon it spans
-- `domains2genome` needs no JBrowse install. JBrowse's
-  `jbrowse make-protein-features` calls this package to place the same calls
+- JBrowse's
+  [protein domains tutorial](https://jbrowse.org/jb2/docs/tutorials/protein_domains/)
+  runs it with `npx`
 
 ## Install
 
