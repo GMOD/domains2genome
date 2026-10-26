@@ -1,3 +1,10 @@
+## [2.2.0](https://github.com/GMOD/domains2genome/compare/v2.1.0...v2.2.0) (2026-10-26)
+
+### Other Changes
+
+- The transcript column is the Name a gene track labels the transcript with ([1981070](https://github.com/GMOD/domains2genome/commit/19810702dd6e1d62cf4af51b391b90584f0283d3))
+- A bare % stays as written, and a Name another transcript writes as its ID falls back ([daa46b1](https://github.com/GMOD/domains2genome/commit/daa46b1eb89921e44dd39a44904a48498d004390))
+
 ## [2.1.0](https://github.com/GMOD/domains2genome/compare/v2.0.2...v2.1.0) (2026-10-24)
 
 ### Other Changes
