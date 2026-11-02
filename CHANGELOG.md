@@ -1,3 +1,16 @@
+## [2.4.0](https://github.com/GMOD/domains2genome/compare/v2.3.0...v2.4.0) (2026-11-02)
+
+### Features
+
+- --gff3 writes each coding transcript with its domains as children ([b4596c7](https://github.com/GMOD/domains2genome/commit/b4596c774c8c1bfe66eaf3effa663e1fa1fa5ee0))
+
+### Other Changes
+
+- JBrowse's tutorial runs domains2genome with npx; the CLI command is gone ([92bb7c7](https://github.com/GMOD/domains2genome/commit/92bb7c78579a22042df67a94d263c77e4f770446))
+- A mistyped flag, an unwritable --out or a missing .gz input prints one Error line ([48add69](https://github.com/GMOD/domains2genome/commit/48add69735d8f29608f5747bea2ecb2173bc6362))
+- An ID as written beats another transcript's ID with its version dropped ([968bde2](https://github.com/GMOD/domains2genome/commit/968bde20623c79c1ca619f08134752fd8de6d87e))
+- Preversion builds before it tests, as CI does ([4b765bd](https://github.com/GMOD/domains2genome/commit/4b765bd40246db730679cfa5cb022334096a7cee))
+
 ## [2.3.0](https://github.com/GMOD/domains2genome/compare/v2.2.0...v2.3.0) (2026-10-26)
 
 ### Other Changes
