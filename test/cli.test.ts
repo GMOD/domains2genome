@@ -66,6 +66,37 @@ test('writes BED12 a block per exon to stdout, warnings to stderr', () => {
   expect(r.stderr).toContain('nobody')
 })
 
+test('--gff3 writes each coding transcript with its exons and CDS, and its features as protein_match children', () => {
+  const genes = [
+    '##gff-version 3',
+    'ctgA\t.\tmRNA\t101\t230\t.\t+\t.\tID=rna-XM_1.1;Name=XM_1.1',
+    'ctgA\t.\texon\t101\t140\t.\t+\t.\tParent=rna-XM_1.1',
+    'ctgA\t.\texon\t191\t260\t.\t+\t.\tParent=rna-XM_1.1',
+    'ctgA\t.\tCDS\t201\t230\t.\t+\t0\tID=cds-XP_1.1;Parent=rna-XM_1.1;protein_id=XP_1.1;product=kinase%3B isoform X1',
+    'ctgA\t.\tCDS\t101\t130\t.\t+\t0\tID=cds-XP_1.1;Parent=rna-XM_1.1;protein_id=XP_1.1;product=kinase%3B isoform X1',
+  ].join('\n')
+  const r = run(['genes.gff3', 'calls.tsv', '--source', 'pfam', '--gff3'], {
+    'genes.gff3': genes,
+    'calls.tsv': calls,
+  })
+  expect(r.status).toBe(0)
+  const kinaseMatch =
+    'ID=rna-XM_1.1:PF00069:8-14;Parent=rna-XM_1.1;Name=Protein kinase domain;accession=PF00069;description=Protein kinase domain;proteinStart=8;proteinEnd=14'
+  expect(r.stdout.trim().split('\n')).toEqual([
+    '##gff-version 3',
+    'ctgA\t.\tmRNA\t101\t260\t.\t+\t.\tID=rna-XM_1.1;Name=XM_1.1;protein_id=XP_1.1;product=kinase%3B isoform X1',
+    'ctgA\t.\tCDS\t101\t130\t.\t+\t0\tParent=rna-XM_1.1',
+    'ctgA\t.\texon\t101\t140\t.\t+\t.\tParent=rna-XM_1.1',
+    `ctgA\tPfam\tprotein_match\t122\t130\t1E-5\t+\t.\t${kinaseMatch}`,
+    'ctgA\t.\texon\t191\t260\t.\t+\t.\tParent=rna-XM_1.1',
+    'ctgA\t.\tCDS\t201\t230\t.\t+\t0\tParent=rna-XM_1.1',
+    `ctgA\tPfam\tprotein_match\t201\t212\t1E-5\t+\t.\t${kinaseMatch}`,
+  ])
+  expect(r.stderr).toContain(
+    'Placed 1 protein features on 1 coding transcripts',
+  )
+})
+
 test('a --source matching no call names the sources the calls come from', () => {
   const r = run(['genes.gff3', 'calls.tsv', '--source', 'gene3d'], {
     'genes.gff3': gff3,

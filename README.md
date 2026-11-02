@@ -5,7 +5,8 @@ can draw them over the exons that encode them.
 
 - **In:** gene models (GFF3 or GTF) and domain calls on their proteins
   (InterProScan TSV or GFF3, or HMMER `--domtblout`)
-- **Out:** BED12, one row per domain, a block per exon it spans
+- **Out:** BED12, one row per domain, a block per exon it spans; or with
+  `--gff3`, each coding transcript with its domains as children
 - JBrowse's
   [protein domains tutorial](https://jbrowse.org/jb2/docs/tutorials/protein_domains/)
   runs it with `npx`
@@ -95,6 +96,7 @@ tabix -p bed domains.bed.gz
 - `--source Pfam,SMART` keeps only the analyses named, as InterProScan names
   them in its fourth column
 - `--out file.bed` writes the BED to a file instead of to stdout
+- `--gff3` writes GFF3 instead of BED12 (see [Output](#output))
 
 The calls must come from proteins translated from the same gene models. Each
 call names its protein by the transcript ID, the CDS `protein_id` or the CDS ID,
@@ -116,9 +118,31 @@ times −log10(E-value), capped at 1000.
   transcripts would write one label, each writes its ID. From a GTF it is the
   `transcript_id`, as JBrowse labels GTF transcripts.
 
-IGV, the UCSC browser and JBrowse all draw BED12. In JBrowse, a multi-row
-display with `rows: 'transcript'` draws each transcript's domains on a row of
-its own, as the
+IGV, the UCSC browser and JBrowse all draw BED12.
+
+### GFF3
+
+With `--gff3`, each coding transcript is an `mRNA` with its `exon` and `CDS`
+lines, and each domain placed on it a `protein_match` child, so the file carries
+which transcript a domain sits on. Every coding transcript is written, with or
+without a domain on it.
+
+```bash
+domains2genome genes.gff3 pfam.domtblout --gff3 | bgzip > domains.gff3.gz
+tabix -p gff domains.gff3.gz
+```
+
+- The `mRNA` keeps the annotation's `ID` and its `Name`, as above, with the
+  CDS's `protein_id` and `product`.
+- A `protein_match`'s `Name` is the domain's name, its source column the
+  analysis and its score the E-value; `accession`, `description`, `proteinStart`
+  and `proteinEnd` are attributes. A domain crossing an intron is written on a
+  line per exon, the lines sharing one `ID`.
+- Lines are sorted by contig and start, a parent before the children starting
+  where it does, as tabix needs.
+
+JBrowse's multi-row display draws each transcript of this file on a row of its
+own, its exons with the domains over them, as the
 [protein domains tutorial](https://jbrowse.org/jb2/docs/tutorials/protein_domains/)
 shows.
 

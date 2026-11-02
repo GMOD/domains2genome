@@ -13,7 +13,14 @@ export interface CodingTranscript extends Feat {
   /** JBrowse's default label for the transcript, its `Name` else its ID, or its ID where another transcript writes that Name */
   name: string
   strand: 1 | -1
+  /** the CDS segments */
   subfeatures: Feat[]
+  /** the exons, where the annotation writes them */
+  exons: { start: number; end: number }[]
+  /** the CDS's `protein_id`, or `-` */
+  protein: string
+  /** the CDS's `product`, or `-` */
+  product: string
 }
 
 export interface ProteinCall {
@@ -108,13 +115,22 @@ export async function readCodingTranscripts(file: string) {
     { transcript: CodingTranscript; aliases: string[] }
   >()
   const gff3Names = new Map<string, string>()
+  const exonsByParent = new Map<string, { start: number; end: number }[]>()
   for await (const line of readLines(file)) {
     const cols = line.split('\t')
-    if (line.startsWith('#') || cols.length < 9 || cols[2] === 'exon') {
+    if (line.startsWith('#') || cols.length < 9) {
       continue
     }
     const isGtf = /^\s*\w+\s+"/.test(cols[8]!)
     const row = isGtf ? gtfRow(cols) : gff3Row(line)
+    if (row.type === 'exon') {
+      for (const parent of row.attribute(isGtf ? 'transcript_id' : 'parent')) {
+        const exons = exonsByParent.get(parent) ?? []
+        exons.push({ start: row.start, end: row.end })
+        exonsByParent.set(parent, exons)
+      }
+      continue
+    }
     if (row.type !== 'CDS') {
       const [id] = row.attribute('id')
       const [name] = row.attribute('name')
@@ -124,6 +140,8 @@ export async function readCodingTranscripts(file: string) {
       continue
     }
     const parents = row.attribute(isGtf ? 'transcript_id' : 'parent')
+    const [protein] = row.attribute('protein_id')
+    const [product] = row.attribute('product')
     const aliases = [
       ...row.attribute('protein_id'),
       ...(isGtf ? [] : row.attribute('id')),
@@ -145,15 +163,30 @@ export async function readCodingTranscripts(file: string) {
           end: cds.end,
           strand: row.strand,
           subfeatures: [],
+          exons: [],
+          protein: '-',
+          product: '-',
         },
         aliases: [],
       }
       byTranscript.set(parent, entry)
       const { transcript } = entry
+      if (protein !== undefined) {
+        transcript.protein = protein
+      }
+      if (product !== undefined) {
+        transcript.product = product
+      }
       transcript.start = Math.min(transcript.start, cds.start)
       transcript.end = Math.max(transcript.end, cds.end)
       transcript.subfeatures.push(cds)
       entry.aliases.push(...aliases)
+    }
+  }
+  for (const [parent, exons] of exonsByParent) {
+    const entry = byTranscript.get(parent)
+    if (entry) {
+      entry.transcript.exons = exons.toSorted((a, b) => a.start - b.start)
     }
   }
   // a Name another transcript writes, as its Name or its ID, is not the
@@ -191,7 +224,11 @@ export async function readCodingTranscripts(file: string) {
       lookup.set(key, transcript)
     }
   }
-  return { lookup, transcripts: byTranscript.size }
+  return {
+    lookup,
+    transcripts: byTranscript.size,
+    codingTranscripts: [...byTranscript.values()].map(e => e.transcript),
+  }
 }
 
 export function findTranscript(

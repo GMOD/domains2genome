@@ -3,7 +3,6 @@ import { writeFile } from 'node:fs/promises'
 import { parseArgs } from 'node:util'
 
 import { placeProteinFeatures, placementWarnings } from './place.ts'
-import { BED_HEADER } from './project.ts'
 
 const usage = `Usage: domains2genome <genes.gff3|gtf> <calls> [options]
 
@@ -14,6 +13,9 @@ Options:
   --out <file>       write the BED here instead of to stdout
   --source <a,b>     keep only these analyses, as InterProScan names them
                      (e.g. Pfam,SMART)
+  --gff3             write GFF3: each coding transcript as an mRNA with its
+                     exons and CDS, and each feature on it as a protein_match
+                     child, so a browser draws them together
   -h, --help         show this help
 
 Examples:
@@ -31,6 +33,7 @@ async function main() {
     options: {
       out: { type: 'string' },
       source: { type: 'string' },
+      gff3: { type: 'boolean' },
       help: { type: 'boolean', short: 'h' },
       // the 1.x spelling, kept so existing commands still run
       genomeGFF: { type: 'string' },
@@ -46,12 +49,13 @@ async function main() {
 
   const placed = await placeProteinFeatures(annotation, calls, {
     sources: values.source?.split(',').map(s => s.trim()),
+    gff3: values.gff3,
   })
-  const bed = [`#${BED_HEADER.join('\t')}`, ...placed.lines, ''].join('\n')
+  const text = [placed.header, ...placed.lines, ''].join('\n')
   if (values.out) {
-    await writeFile(values.out, bed)
+    await writeFile(values.out, text)
   } else {
-    process.stdout.write(bed)
+    process.stdout.write(text)
   }
   for (const warning of placementWarnings(placed)) {
     console.warn(`Warning: ${warning}`)
@@ -61,7 +65,7 @@ async function main() {
       ? ` (${placed.skippedSource} from other analyses left out)`
       : ''
   console.error(
-    `Placed ${placed.lines.length} protein features on ${placed.transcripts} coding transcripts${skipped}`,
+    `Placed ${placed.features} protein features on ${placed.transcripts} coding transcripts${skipped}`,
   )
 }
 
