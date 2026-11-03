@@ -8,9 +8,12 @@ can draw them over the exons that encode them.
 - **Out:** BED12, one row per domain with a block per exon it spans; or with
   `--gff3`, each coding transcript with its domains as children
 
-JBrowse's
-[protein domains tutorial](https://jbrowse.org/jb2/docs/tutorials/protein_domains/)
-walks through it end to end.
+![The four isoforms of the honey bee vav gene in JBrowse 2, each on a row of its own with its Pfam domains over its exons, colored by family](docs/img/jbrowse-vav.png)
+
+Pfam domains on the four isoforms of the honey bee _vav_ gene, from
+`domains2genome --gff3` in JBrowse 2's multi-row display. [Open this view in
+JBrowse][demo], or follow JBrowse's [protein domains tutorial][tutorial], which
+builds it from the genome up.
 
 ## Usage
 
@@ -178,3 +181,7 @@ domains2genome was called `interproscan2genome` before 2.0. That command and its
 block per exon, where 1.x printed one GFF3 span across the introns. 1.x also
 divided residue positions by three, which put each domain about a third of the
 way along its protein.
+
+[demo]:
+  https://jbrowse.org/code/jb2/main/?config=https%3A%2F%2Fjbrowse.org%2Fhubs%2Fgenark%2FGCF%2F003%2F254%2F395%2FGCF_003254395.2%2Fconfig.json&session=spec-%7B%22sessionTracks%22%3A%5B%7B%22type%22%3A%22FeatureTrack%22%2C%22trackId%22%3A%22pfam_domains%22%2C%22name%22%3A%22Pfam%20domains%22%2C%22assemblyNames%22%3A%5B%22GCF_003254395.2%22%5D%2C%22adapter%22%3A%7B%22type%22%3A%22Gff3TabixAdapter%22%2C%22uri%22%3A%22https%3A%2F%2Fjbrowse.org%2Fdemos%2Fprotein_domains%2Fpfam.gff3.gz%22%2C%22csi%22%3Atrue%7D%2C%22displays%22%3A%5B%7B%22type%22%3A%22LinearMultiRowFeatureDisplay%22%2C%22displayId%22%3A%22pfam_domains-LinearMultiRowFeatureDisplay%22%2C%22encoding%22%3A%7B%22color%22%3A%7B%22field%22%3A%22name%22%2C%22legend%22%3A%7B%22title%22%3A%22Pfam%20family%22%7D%7D%7D%7D%5D%7D%5D%2C%22views%22%3A%5B%7B%22type%22%3A%22LinearGenomeView%22%2C%22assembly%22%3A%22GCF_003254395.2%22%2C%22loc%22%3A%22NC_037640.1%3A1%2C971%2C640-1%2C976%2C800%22%2C%22tracks%22%3A%5B%7B%22trackId%22%3A%22GCF_003254395.2-ncbiGff%22%7D%2C%7B%22trackId%22%3A%22pfam_domains%22%2C%22height%22%3A120%7D%5D%7D%5D%7D&sessionName=Screenshot
+[tutorial]: https://jbrowse.org/jb2/docs/tutorials/protein_domains/
