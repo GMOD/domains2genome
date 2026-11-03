@@ -41,21 +41,21 @@ function attributes(pairs: [string, string | number][]) {
 function gff3Row(
   transcript: CodingTranscript,
   {
-    source,
+    source = '.',
     type,
     start,
     end,
-    score,
-    phase,
+    score = '.',
+    phase = '.',
     depth,
     pairs,
   }: {
-    source: string
+    source?: string
     type: string
     start: number
     end: number
-    score: string
-    phase: string
+    score?: string
+    phase?: string
     depth: 0 | 1
     pairs: [string, string | number][]
   },
@@ -88,12 +88,9 @@ export function transcriptGff3Rows(transcript: CodingTranscript): Gff3Row[] {
   const { exons } = transcript
   return [
     gff3Row(transcript, {
-      source: '.',
       type: 'mRNA',
       start: Math.min(transcript.start, ...exons.map(e => e.start)),
       end: Math.max(transcript.end, ...exons.map(e => e.end)),
-      score: '.',
-      phase: '.',
       depth: 0,
       pairs: [
         ['ID', transcript.id],
@@ -104,23 +101,18 @@ export function transcriptGff3Rows(transcript: CodingTranscript): Gff3Row[] {
     }),
     ...exons.map(exon =>
       gff3Row(transcript, {
-        source: '.',
         type: 'exon',
         start: exon.start,
         end: exon.end,
-        score: '.',
-        phase: '.',
         depth: 1,
         pairs: [parent],
       }),
     ),
     ...transcript.subfeatures.map(cds =>
       gff3Row(transcript, {
-        source: '.',
         type: 'CDS',
         start: cds.start,
         end: cds.end,
-        score: '.',
         phase: String(cds.phase ?? 0),
         depth: 1,
         pairs: [parent],
@@ -147,7 +139,6 @@ export function proteinMatchGff3Rows({
       start: block.start,
       end: block.end,
       score: call.evalue,
-      phase: '.',
       depth: 1,
       pairs: [
         ['ID', id],

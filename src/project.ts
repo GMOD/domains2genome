@@ -60,7 +60,7 @@ const asList = (v: string | string[] | undefined) =>
 
 // gff-nostream is the parser JBrowse reads the gene track with, so a tag's
 // case, escapes and multiple values come out as the gene track's labels do
-function gff3Row(line: string): AnnotationRow {
+function parseGff3Row(line: string): AnnotationRow {
   const feature = parseFeatureLazy(line)
   return {
     type: feature.type,
@@ -122,7 +122,7 @@ export async function readCodingTranscripts(file: string) {
       continue
     }
     const isGtf = /^\s*\w+\s+"/.test(cols[8]!)
-    const row = isGtf ? gtfRow(cols) : gff3Row(line)
+    const row = isGtf ? gtfRow(cols) : parseGff3Row(line)
     if (row.type === 'exon') {
       for (const parent of row.attribute(isGtf ? 'transcript_id' : 'parent')) {
         const exons = exonsByParent.get(parent) ?? []
@@ -258,7 +258,7 @@ function interProGffCall(
   if (type === 'polypeptide') {
     return undefined
   }
-  const { attribute } = gff3Row(line)
+  const { attribute } = parseGff3Row(line)
   const [name = ''] = attribute('name')
   const [alias] = attribute('alias')
   const [description = ''] = attribute('signature_desc')
