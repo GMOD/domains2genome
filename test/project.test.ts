@@ -125,6 +125,53 @@ test('reads a GTF', async () => {
   expect(findTranscript(lookup, 'P1')!.id).toBe('T1')
 })
 
+const genesOf = async (text: string) =>
+  Object.fromEntries(
+    (
+      await readCodingTranscripts(tmpFile('genes.gff3', text))
+    ).codingTranscripts.map(t => [t.id, t.gene]),
+  )
+
+test("a transcript's gene is its parent gene's Name, else its own gene tag, else the gene's ID", async () => {
+  const genes = await genesOf(
+    [
+      // NCBI: the mRNA names the gene too, and the gene row comes first
+      'c\t.\tgene\t1\t90\t.\t+\t.\tID=gene-Su(var)3-9;Name=Su(var)3-9;gene=Su(var)3-9',
+      'c\t.\tmRNA\t1\t90\t.\t+\t.\tID=rna-X1;Parent=gene-Su(var)3-9;gene=Su(var)3-9',
+      'c\t.\tCDS\t1\t90\t.\t+\t0\tParent=rna-X1',
+      // Ensembl: only the gene row has a Name, and it comes after the CDS
+      'c\t.\tmRNA\t101\t190\t.\t+\t.\tID=transcript:T2;Parent=gene:G2',
+      'c\t.\tCDS\t101\t190\t.\t+\t0\tParent=transcript:T2',
+      'c\t.\tgene\t101\t190\t.\t+\t.\tID=gene:G2;Name=BRCA2',
+      // no gene row at all
+      'c\t.\tmRNA\t201\t290\t.\t+\t.\tID=t3;Parent=g3',
+      'c\t.\tCDS\t201\t290\t.\t+\t0\tParent=t3',
+      // a prokaryote's CDS whose parent is the gene itself
+      'c\t.\tgene\t301\t390\t.\t+\t.\tID=gene-b0001;Name=thrL;gene=thrL',
+      'c\t.\tCDS\t301\t390\t.\t+\t0\tParent=gene-b0001',
+      // a CDS whose parent has no row
+      'c\t.\tCDS\t401\t490\t.\t+\t0\tParent=orphan',
+    ].join('\n'),
+  )
+  expect(genes).toEqual({
+    'rna-X1': 'Su(var)3-9',
+    'transcript:T2': 'BRCA2',
+    t3: 'g3',
+    'gene-b0001': 'thrL',
+    orphan: '-',
+  })
+})
+
+test("a GTF transcript's gene is its gene_name, else its gene_id", async () => {
+  const genes = await genesOf(
+    [
+      'c\t.\tCDS\t1\t90\t.\t+\t0\tgene_id "ENSG1"; transcript_id "T1"; gene_name "BRCA2";',
+      'c\t.\tCDS\t101\t190\t.\t+\t0\tgene_id "ENSG2"; transcript_id "T2";',
+    ].join('\n'),
+  )
+  expect(genes).toEqual({ T1: 'BRCA2', T2: 'ENSG2' })
+})
+
 const hmmscanRow =
   'Pkinase PF00069.29 264 XP_1.1 - 600 1e-50 170.2 0.1 1 1 1e-53 2e-50 169.9 0.1 1 264 4 9 3 10 0.95 Protein kinase domain'
 const hmmsearchRow =

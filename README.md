@@ -86,7 +86,9 @@ tabix -p gff domains.gff3.gz
 - Each coding transcript is an `mRNA` with its `exon` and `CDS` lines, written
   with or without a domain on it
 - The `mRNA` keeps the annotation's `ID` and `Name`, plus the CDS's `protein_id`
-  and `product`
+  and `product`, and names its gene in `gene`: the parent gene's `Name`, else
+  the mRNA's own `gene` tag, else the gene's ID (from a GTF, `gene_name`, else
+  `gene_id`)
 - A `protein_match` carries the analysis as its source and the E-value as its
   score, with `Name`, `accession`, `description`, `proteinStart` and
   `proteinEnd` attributes. A domain crossing an intron takes a line per exon,

@@ -66,10 +66,11 @@ test('writes BED12 a block per exon to stdout, warnings to stderr', () => {
   expect(r.stderr).toContain('nobody')
 })
 
-test('--gff3 writes each coding transcript with its exons and CDS, and its features as protein_match children', () => {
+test('--gff3 writes each coding transcript with its gene, exons and CDS, and its features as protein_match children', () => {
   const genes = [
     '##gff-version 3',
-    'ctgA\t.\tmRNA\t101\t230\t.\t+\t.\tID=rna-XM_1.1;Name=XM_1.1',
+    'ctgA\t.\tgene\t101\t260\t.\t+\t.\tID=gene-KIN1;Name=Kin1',
+    'ctgA\t.\tmRNA\t101\t230\t.\t+\t.\tID=rna-XM_1.1;Parent=gene-KIN1;Name=XM_1.1',
     'ctgA\t.\texon\t101\t140\t.\t+\t.\tParent=rna-XM_1.1',
     'ctgA\t.\texon\t191\t260\t.\t+\t.\tParent=rna-XM_1.1',
     'ctgA\t.\tCDS\t201\t230\t.\t+\t0\tID=cds-XP_1.1;Parent=rna-XM_1.1;protein_id=XP_1.1;product=kinase%3B isoform X1',
@@ -84,7 +85,7 @@ test('--gff3 writes each coding transcript with its exons and CDS, and its featu
     'ID=rna-XM_1.1:PF00069:8-14;Parent=rna-XM_1.1;Name=Protein kinase domain;accession=PF00069;description=Protein kinase domain;proteinStart=8;proteinEnd=14'
   expect(r.stdout.trim().split('\n')).toEqual([
     '##gff-version 3',
-    'ctgA\t.\tmRNA\t101\t260\t.\t+\t.\tID=rna-XM_1.1;Name=XM_1.1;protein_id=XP_1.1;product=kinase%3B isoform X1',
+    'ctgA\t.\tmRNA\t101\t260\t.\t+\t.\tID=rna-XM_1.1;Name=XM_1.1;gene=Kin1;protein_id=XP_1.1;product=kinase%3B isoform X1',
     'ctgA\t.\tCDS\t101\t130\t.\t+\t0\tParent=rna-XM_1.1',
     'ctgA\t.\texon\t101\t140\t.\t+\t.\tParent=rna-XM_1.1',
     `ctgA\tPfam\tprotein_match\t122\t130\t1E-5\t+\t.\t${kinaseMatch}`,

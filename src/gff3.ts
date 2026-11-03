@@ -95,6 +95,7 @@ export function transcriptGff3Rows(transcript: CodingTranscript): Gff3Row[] {
       pairs: [
         ['ID', transcript.id],
         ['Name', transcript.name],
+        ['gene', transcript.gene],
         ['protein_id', transcript.protein],
         ['product', transcript.product],
       ],

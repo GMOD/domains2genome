@@ -21,6 +21,8 @@ export interface CodingTranscript extends Feat {
   protein: string
   /** the CDS's `product`, or `-` */
   product: string
+  /** the gene's label: its GFF3 `Name`, else the transcript's `gene`, else the gene's ID; from a GTF its `gene_name`, else its `gene_id`; or `-` */
+  gene: string
 }
 
 export interface ProteinCall {
@@ -89,6 +91,20 @@ function gtfRow(cols: string[]): AnnotationRow {
   }
 }
 
+interface Gff3Feature {
+  name?: string
+  gene?: string
+  parent?: string
+}
+
+function geneLabel(features: Map<string, Gff3Feature>, id: string) {
+  const feature = features.get(id)
+  const parent = feature?.parent
+  const parentName =
+    parent === undefined ? undefined : features.get(parent)?.name
+  return parentName ?? feature?.gene ?? parent
+}
+
 const withoutPrefix = (id: string) =>
   id.replace(/^(cds|rna|transcript|CDS)[-:]/, '')
 const withoutVersion = (id: string) => id.replace(/\.\d+$/, '')
@@ -114,7 +130,7 @@ export async function readCodingTranscripts(file: string) {
     string,
     { transcript: CodingTranscript; aliases: string[] }
   >()
-  const gff3Names = new Map<string, string>()
+  const gff3Features = new Map<string, Gff3Feature>()
   const exonsByParent = new Map<string, { start: number; end: number }[]>()
   for await (const line of readLines(file)) {
     const cols = line.split('\t')
@@ -133,15 +149,20 @@ export async function readCodingTranscripts(file: string) {
     }
     if (row.type !== 'CDS') {
       const [id] = row.attribute('id')
-      const [name] = row.attribute('name')
-      if (!isGtf && id && name) {
-        gff3Names.set(id, name)
+      if (!isGtf && id) {
+        const [name] = row.attribute('name')
+        const [gene] = row.attribute('gene')
+        const [parent] = row.attribute('parent')
+        gff3Features.set(id, { name, gene, parent })
       }
       continue
     }
     const parents = row.attribute(isGtf ? 'transcript_id' : 'parent')
     const [protein] = row.attribute('protein_id')
     const [product] = row.attribute('product')
+    const [gtfGene] = isGtf
+      ? [...row.attribute('gene_name'), ...row.attribute('gene_id')]
+      : []
     const aliases = [
       ...row.attribute('protein_id'),
       ...(isGtf ? [] : row.attribute('id')),
@@ -166,6 +187,7 @@ export async function readCodingTranscripts(file: string) {
           exons: [],
           protein: '-',
           product: '-',
+          gene: '-',
         },
         aliases: [],
       }
@@ -176,6 +198,9 @@ export async function readCodingTranscripts(file: string) {
       }
       if (product !== undefined) {
         transcript.product = product
+      }
+      if (gtfGene !== undefined) {
+        transcript.gene = gtfGene
       }
       transcript.start = Math.min(transcript.start, cds.start)
       transcript.end = Math.max(transcript.end, cds.end)
@@ -193,7 +218,7 @@ export async function readCodingTranscripts(file: string) {
   // transcript's alone
   const nameCounts = new Map<string, number>()
   for (const id of byTranscript.keys()) {
-    const name = gff3Names.get(id)
+    const name = gff3Features.get(id)?.name
     for (const written of name && name !== id ? [id, name] : [id]) {
       nameCounts.set(written, (nameCounts.get(written) ?? 0) + 1)
     }
@@ -203,9 +228,13 @@ export async function readCodingTranscripts(file: string) {
   const lookup = new Map<string, CodingTranscript>()
   const loose = new Map<string, CodingTranscript | null>()
   for (const { transcript, aliases } of byTranscript.values()) {
-    const name = gff3Names.get(transcript.id)
+    const name = gff3Features.get(transcript.id)?.name
     if (name && nameCounts.get(name) === 1) {
       transcript.name = name
+    }
+    const gene = geneLabel(gff3Features, transcript.id)
+    if (gene !== undefined) {
+      transcript.gene = gene
     }
     const ids = [transcript.id, ...aliases]
     for (const id of ids) {
