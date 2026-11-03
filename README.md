@@ -49,10 +49,8 @@ nextflow run ebi-pf-team/interproscan6 -r 6.0.3.0 -profile docker \
   its TSV gives (`--formats tsv` reads the same otherwise)
 - Leave out `--applications` to run every analysis, then pick the ones to place
   with `--source` in step 3
-- Without Docker, `-profile apptainer` runs the same containers, and Apptainer
-  installs without root (`tools/install-unprivileged.sh` in its repository)
-- On a cluster, `-profile singularity,slurm` runs each batch as a job, as
-  InterProScan's scaling docs describe
+- Without Docker, `-profile apptainer` runs the same containers; on a cluster,
+  `-profile singularity,slurm` runs each batch as a job
 - InterProScan 5 takes
   `interproscan.sh -i proteins.faa -f tsv -appl Pfam -o proteins.faa.tsv`
 
@@ -93,17 +91,16 @@ bgzip domains.bed
 tabix -p bed domains.bed.gz
 ```
 
-- `--source Pfam,SMART` keeps only the analyses named, as InterProScan names
-  them in its fourth column
-- `--out file.bed` writes the BED to a file instead of to stdout
-- `--gff3` writes GFF3 instead of BED12 (see [Output](#output))
+`--source Pfam,SMART` keeps only the analyses named in InterProScan's fourth
+column, `--out` writes to a file, and `--gff3` writes GFF3 (see
+[Output](#output)).
 
-The calls must come from proteins translated from the same gene models. Each
-call names its protein by the transcript ID, the CDS `protein_id` or the CDS ID,
-which covers `gffread -y`, NCBI and Ensembl protein FASTA. Where HMMER hits on
-one protein overlap by more than half, the one with the lowest E-value is kept,
-whatever their Pfam clans; `pfam_scan` and InterProScan resolve only hits in one
-clan.
+The proteins must be translated from the same gene models, and named by the
+transcript ID, the CDS `protein_id` or the CDS ID, as `gffread -y`, NCBI and
+Ensembl protein FASTA are. HMMER output can come from hmmscan or hmmsearch.
+Where HMMER hits on one protein overlap by more than half, the lowest E-value
+wins, whatever their Pfam clans; `pfam_scan` and InterProScan resolve only hits
+in one clan.
 
 ## Output
 
@@ -112,11 +109,9 @@ After the twelve BED columns come `accession`, `description`, `source`,
 `transcript`, `proteinStart`, `proteinEnd` and `evalue`. The score column is ten
 times −log10(E-value), capped at 1000.
 
-- `transcript` is the label JBrowse gives the transcript by default: its GFF3
-  `Name`, else its `ID`, read with the same parser
-  ([@gmod/gff-nostream](https://github.com/GMOD/gff-nostream)). Where two coding
-  transcripts would write one label, each writes its ID. From a GTF it is the
-  `transcript_id`, as JBrowse labels GTF transcripts.
+`transcript` is the label JBrowse gives the transcript by default: its GFF3
+`Name`, else its `ID` (or its GTF `transcript_id`). Where two coding transcripts
+would share a label, each writes its ID.
 
 IGV, the UCSC browser and JBrowse all draw BED12.
 
@@ -132,19 +127,17 @@ domains2genome genes.gff3 pfam.domtblout --gff3 | bgzip > domains.gff3.gz
 tabix -p gff domains.gff3.gz
 ```
 
-- The `mRNA` keeps the annotation's `ID` and its `Name`, as above, with the
-  CDS's `protein_id` and `product`.
-- A `protein_match`'s `Name` is the domain's name, its source column the
-  analysis and its score the E-value; `accession`, `description`, `proteinStart`
-  and `proteinEnd` are attributes. A domain crossing an intron is written on a
-  line per exon, the lines sharing one `ID`.
-- Lines are sorted by contig and start, a parent before the children starting
-  where it does, as tabix needs.
+- The `mRNA` keeps the annotation's `ID` and `Name`, with the CDS's `protein_id`
+  and `product`
+- A `protein_match` has the domain's `Name`, the analysis as its source and the
+  E-value as its score, with `accession`, `description`, `proteinStart` and
+  `proteinEnd` attributes. A domain crossing an intron takes a line per exon,
+  sharing one `ID`
+- Lines are sorted for tabix, a parent before the children starting where it
+  does
 
-JBrowse's multi-row display draws each transcript of this file on a row of its
-own, its exons with the domains over them, as the
-[protein domains tutorial](https://jbrowse.org/jb2/docs/tutorials/protein_domains/)
-shows.
+JBrowse's multi-row display draws each transcript on a row of its own, with its
+domains over its exons.
 
 ## As a library
 
@@ -160,9 +153,8 @@ const { lines, unmatched } = await placeProteinFeatures(
 
 ## From interproscan2genome
 
-domains2genome was called `interproscan2genome` before 2.0. Version 1.x read
-InterProScan's GFF3 only and printed GFF3 with one span per domain, introns
-included. The `interproscan2genome` command and its `--genomeGFF` and
-`--interproGFF` flags still run, and now print BED12 a block per exon. Positions
-differ as well: 1.x divided residue positions by three, which put each domain
-about a third of the way along its protein.
+domains2genome was called `interproscan2genome` before 2.0. That command and its
+`--genomeGFF` and `--interproGFF` flags still run, but print BED12 a block per
+exon rather than 1.x's GFF3 span across introns, and place each domain where it
+is: 1.x divided residue positions by three, which put each domain about a third
+of the way along its protein.
