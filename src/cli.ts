@@ -42,13 +42,22 @@ async function main() {
   })
   const annotation = positionals[0] ?? values.genomeGFF
   const calls = positionals[1] ?? values.interproGFF
-  if (values.help || !annotation || !calls) {
+  if (values.help) {
+    process.stdout.write(`${usage}\n`)
+    process.exit(0)
+  }
+  if (!annotation || !calls) {
     console.error(usage)
-    process.exit(values.help ? 0 : 1)
+    process.exit(1)
   }
 
+  // an empty --source, as from an unset shell variable, keeps every analysis
+  const sources = values.source
+    ?.split(',')
+    .map(s => s.trim())
+    .filter(s => s !== '')
   const placed = await placeProteinFeatures(annotation, calls, {
-    sources: values.source?.split(',').map(s => s.trim()),
+    sources: sources?.length ? sources : undefined,
     gff3: values.gff3,
   })
   const text = [placed.header, ...placed.lines, ''].join('\n')

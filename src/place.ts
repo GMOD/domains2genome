@@ -72,9 +72,11 @@ export async function placeProteinFeatures(
       }
     }
   }
-  if (parsed.length === 0 && skippedSource > 0) {
+  if (parsed.length === 0) {
     throw new Error(
-      `No call in ${calls} comes from ${sources?.join(', ')}; its calls come from ${[...skipped].join(', ')}`,
+      skippedSource > 0
+        ? `No call in ${calls} comes from ${sources?.join(', ')}; its calls come from ${[...skipped].join(', ')}`
+        : `No protein features could be read from ${calls}; it should be InterProScan TSV or GFF3, or HMMER --domtblout`,
     )
   }
 

@@ -125,6 +125,33 @@ test('the 1.x flags still run, and --out writes a file', () => {
   expect(readFileSync(path.join(r.dir, 'o.bed'), 'utf8')).toContain(kinase)
 })
 
+test('a calls file holding no call says so, naming the formats it reads', () => {
+  const r = run(['genes.gff3', 'proteins.faa'], {
+    'genes.gff3': gff3,
+    'proteins.faa': '>XP_1.1\nMKVLA\n',
+  })
+  expect(r.status).toBe(1)
+  expect(r.stderr).toContain(
+    'No protein features could be read from proteins.faa; it should be InterProScan TSV or GFF3, or HMMER --domtblout',
+  )
+})
+
+test('an empty --source keeps every analysis', () => {
+  const r = run(['genes.gff3', 'calls.tsv', '--source', ''], {
+    'genes.gff3': gff3,
+    'calls.tsv': calls,
+  })
+  expect(r.status).toBe(0)
+  expect(r.stderr).toContain('Placed 2 protein features')
+})
+
+test('--help prints the usage to stdout', () => {
+  const r = run(['--help'], {})
+  expect(r.status).toBe(0)
+  expect(r.stdout).toContain('Usage: domains2genome')
+  expect(r.stderr).toBe('')
+})
+
 test('refuses calls that match no transcript', () => {
   const r = run(['genes.gff3', 'calls.tsv'], {
     'genes.gff3': gff3,
