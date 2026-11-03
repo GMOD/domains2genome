@@ -4,25 +4,95 @@ domains2genome places protein domain calls on the genome, so a genome browser
 can draw them over the exons that encode them.
 
 - **In:** gene models (GFF3 or GTF) and domain calls on their proteins
-  (InterProScan TSV or GFF3, or HMMER `--domtblout`)
-- **Out:** BED12, one row per domain, a block per exon it spans; or with
+  (InterProScan TSV or GFF3, or HMMER `--domtblout` from hmmscan or hmmsearch)
+- **Out:** BED12, one row per domain with a block per exon it spans; or with
   `--gff3`, each coding transcript with its domains as children
-- JBrowse's
-  [protein domains tutorial](https://jbrowse.org/jb2/docs/tutorials/protein_domains/)
-  runs it with `npx`
 
-## Install
+JBrowse's
+[protein domains tutorial](https://jbrowse.org/jb2/docs/tutorials/protein_domains/)
+walks through it end to end.
+
+## Usage
 
 ```bash
-npm install -g domains2genome
+npx domains2genome genes.gff3 interpro.tsv > domains.bed
 ```
 
-or run it once with `npx domains2genome`.
+or install it with `npm install -g domains2genome`.
+
+| Option           | Effect                                                                              |
+| ---------------- | ----------------------------------------------------------------------------------- |
+| `--source <a,b>` | keep only these analyses, as InterProScan's fourth column names them (`Pfam,SMART`) |
+| `--gff3`         | write GFF3 instead of BED12 (see [BED12 or GFF3?](#bed12-or-gff3))                  |
+| `--out <file>`   | write to a file instead of stdout                                                   |
+
+Either input may be gzipped (`.gz` or `.bgz`). The proteins must be translated
+from the same gene models, and named by the transcript ID, the CDS `protein_id`
+or the CDS ID, as `gffread -y`, NCBI and Ensembl protein FASTA are. A name that
+matches no transcript is reported on stderr.
+
+## BED12 or GFF3?
+
+Both formats hold the same domains, placed the same way. They differ in what
+else the file holds, and so in how a browser draws it.
+
+|                            | BED12 (default)                                       | GFF3 (`--gff3`)                                                                      |
+| -------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Holds                      | the domains only, one row each                        | every coding transcript, with its domains as children; non-coding genes are left out |
+| Looks like                 | a domain track of its own, beside the gene track      | each transcript with its domains over its exons                                      |
+| Links domain to transcript | by label only, in the `transcript` column             | by `Parent`, so isoforms keep their own domains                                      |
+| Drawn as intended by       | IGV, the UCSC browser, JBrowse; bedtools reads it too | JBrowse; other browsers may not draw `protein_match` children on the transcript      |
+| Index with                 | `tabix -p bed`                                        | `tabix -p gff`                                                                       |
+
+Choose BED12 to add domains to a browser that already shows the genes, or to use
+them in other tools. Choose GFF3 to see which isoform carries which domain: in
+JBrowse's multi-row display each transcript gets a row of its own.
+
+### BED12
+
+Rows are sorted by contig and start, under a `#` line naming the columns, so
+`bgzip` and `tabix -p bed` index the file as written. A domain crossing an
+intron is one row with a block on each exon (tabs shown as spaces):
+
+```
+ctgA  121  212  Protein kinase domain  50  +  121  212  0  2  9,12  0,79  PF00069  Protein kinase domain  Pfam  XM_1.1  8  14  1E-5
+```
+
+The `score` is ten times −log10(E-value), capped at 1000, so 1e-50 scores 500.
+Seven columns follow the twelve BED ones:
+
+| Column                       | Holds                                                                      |
+| ---------------------------- | -------------------------------------------------------------------------- |
+| `accession`                  | the signature's accession, e.g. `PF00069`                                  |
+| `description`                | the InterPro entry's description, else the signature's; `-` from hmmsearch |
+| `source`                     | the analysis: `Pfam`, `SMART`, … or `HMMER`                                |
+| `transcript`                 | the transcript's label in JBrowse: its GFF3 `Name`, else its ID            |
+| `proteinStart`, `proteinEnd` | the residues the domain covers, 1-based                                    |
+| `evalue`                     | the E-value as the caller wrote it                                         |
+
+Where two coding transcripts share a `Name`, each is labeled by its ID instead.
+A GTF transcript is labeled by its `transcript_id`.
+
+### GFF3
+
+```bash
+domains2genome genes.gff3 pfam.domtblout --gff3 | bgzip > domains.gff3.gz
+tabix -p gff domains.gff3.gz
+```
+
+- Each coding transcript is an `mRNA` with its `exon` and `CDS` lines, written
+  with or without a domain on it
+- The `mRNA` keeps the annotation's `ID` and `Name`, plus the CDS's `protein_id`
+  and `product`
+- A `protein_match` carries the analysis as its source and the E-value as its
+  score, with `Name`, `accession`, `description`, `proteinStart` and
+  `proteinEnd` attributes. A domain crossing an intron takes a line per exon,
+  sharing one `ID`
 
 ## From a genome to its domains
 
 Translate the gene models, call domains on the proteins with InterProScan or
-HMMER, then place the calls back on the genome.
+HMMER, then place the calls.
 
 ### 1. Translate the gene models
 
@@ -44,12 +114,11 @@ nextflow run ebi-pf-team/interproscan6 -r 6.0.3.0 -profile docker \
   --applications Pfam --formats gff3
 ```
 
-- InterProScan writes `proteins.faa.gff3`. Its GFF3 names each domain by Pfam's
-  short name (`Gp_dh_N`), which labels a gene track better than the description
-  its TSV gives (`--formats tsv` reads the same otherwise)
-- Leave out `--applications` to run every analysis, then pick the ones to place
-  with `--source` in step 3
-- Without Docker, `-profile apptainer` runs the same containers; on a cluster,
+- This writes `proteins.faa.gff3`. Prefer it to `--formats tsv`: the GFF3 names
+  each domain by its short name (`Gp_dh_N`), the TSV by its description, and the
+  name labels a browser track better
+- Leave out `--applications` to run every analysis, then choose with `--source`
+- Without Docker, use `-profile apptainer`; on a cluster,
   `-profile singularity,slurm` runs each batch as a job
 - InterProScan 5 takes
   `interproscan.sh -i proteins.faa -f tsv -appl Pfam -o proteins.faa.tsv`
@@ -67,8 +136,13 @@ hmmscan --cut_ga --cpu 4 --noali --domtblout pfam.domtblout \
 ```
 
 `--cut_ga` applies Pfam's curated threshold for each family, as InterPro does.
+HMMER reports every family that clears it, so related families stack on one
+stretch of protein; where two hits overlap by more than half, domains2genome
+keeps the lower E-value. (`pfam_scan` and InterProScan only resolve hits within
+one Pfam clan.)
+
 hmmscan keeps about two cores busy whatever `--cpu` asks, so for a whole
-proteome split the proteins and scan the parts at once:
+proteome, split the proteins and scan the parts at once:
 
 ```bash
 awk -v n=8 '/^>/ { i = (i + 1) % n } { print > ("chunk." i ".faa") }' proteins.faa
@@ -86,75 +160,21 @@ cat chunk.*.faa.domtblout > pfam.domtblout
 domains2genome genes.gff3 proteins.faa.gff3 > domains.bed  # InterProScan
 domains2genome genes.gff3 pfam.domtblout > domains.bed     # HMMER
 
-# bgzipped and indexed, for a browser to read by region
 bgzip domains.bed
 tabix -p bed domains.bed.gz
 ```
 
-`--source Pfam,SMART` keeps only the analyses named in InterProScan's fourth
-column, `--out` writes to a file, and `--gff3` writes GFF3 (see
-[Output](#output)).
-
-The proteins must be translated from the same gene models, and named by the
-transcript ID, the CDS `protein_id` or the CDS ID, as `gffread -y`, NCBI and
-Ensembl protein FASTA are. HMMER output can come from hmmscan or hmmsearch.
-Where HMMER hits on one protein overlap by more than half, the lowest E-value
-wins, whatever their Pfam clans; `pfam_scan` and InterProScan resolve only hits
-in one clan.
-
-## Output
-
-BED12 sorted by contig and start, with a `#` header line naming the columns.
-After the twelve BED columns come `accession`, `description`, `source`,
-`transcript`, `proteinStart`, `proteinEnd` and `evalue`. The score column is ten
-times −log10(E-value), capped at 1000.
-
-`transcript` is the label JBrowse gives the transcript by default: its GFF3
-`Name`, else its `ID` (or its GTF `transcript_id`). Where two coding transcripts
-would share a label, each writes its ID.
-
-IGV, the UCSC browser and JBrowse all draw BED12.
-
-### GFF3
-
-With `--gff3`, each coding transcript is an `mRNA` with its `exon` and `CDS`
-lines, and each domain placed on it a `protein_match` child, so the file carries
-which transcript a domain sits on. Every coding transcript is written, with or
-without a domain on it.
-
-```bash
-domains2genome genes.gff3 pfam.domtblout --gff3 | bgzip > domains.gff3.gz
-tabix -p gff domains.gff3.gz
-```
-
-- The `mRNA` keeps the annotation's `ID` and `Name`, with the CDS's `protein_id`
-  and `product`
-- A `protein_match` has the domain's `Name`, the analysis as its source and the
-  E-value as its score, with `accession`, `description`, `proteinStart` and
-  `proteinEnd` attributes. A domain crossing an intron takes a line per exon,
-  sharing one `ID`
-- Lines are sorted for tabix, a parent before the children starting where it
-  does
-
-JBrowse's multi-row display draws each transcript on a row of its own, with its
-domains over its exons.
+IGV, the UCSC browser and JBrowse all draw the result.
 
 ## As a library
 
-```ts
-import { placeProteinFeatures } from 'domains2genome'
-
-const { lines, unmatched } = await placeProteinFeatures(
-  'genes.gff3',
-  'interpro.tsv',
-  { sources: ['Pfam'] },
-)
-```
+The package exports what the command line runs, with TypeScript types; see
+[docs/library.md](https://github.com/GMOD/domains2genome/blob/main/docs/library.md).
 
 ## From interproscan2genome
 
 domains2genome was called `interproscan2genome` before 2.0. That command and its
-`--genomeGFF` and `--interproGFF` flags still run, but print BED12 a block per
-exon rather than 1.x's GFF3 span across introns, and place each domain where it
-is: 1.x divided residue positions by three, which put each domain about a third
-of the way along its protein.
+`--genomeGFF` and `--interproGFF` flags still run, but now print BED12 with a
+block per exon, where 1.x printed one GFF3 span across the introns. 1.x also
+divided residue positions by three, which put each domain about a third of the
+way along its protein.
