@@ -39,13 +39,13 @@ matches no transcript is reported on stderr.
 Both formats hold the same domains, placed the same way. They differ in what
 else the file holds, and so in how a browser draws it.
 
-|                            | BED12 (default)                                       | GFF3 (`--gff3`)                                                                      |
-| -------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| Holds                      | the domains only, one row each                        | every coding transcript, with its domains as children; non-coding genes are left out |
-| Looks like                 | a domain track of its own, beside the gene track      | each transcript with its domains over its exons                                      |
-| Links domain to transcript | by label only, in the `transcript` column             | by `Parent`, so isoforms keep their own domains                                      |
-| Drawn as intended by       | IGV, the UCSC browser, JBrowse; bedtools reads it too | JBrowse; other browsers may not draw `protein_match` children on the transcript      |
-| Index with                 | `tabix -p bed`                                        | `tabix -p gff`                                                                       |
+|                            | BED12 (default)                                               | GFF3 (`--gff3`)                                                                      |
+| -------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Holds                      | the domains only, one row each                                | every coding transcript, with its domains as children; non-coding genes are left out |
+| Looks like                 | a domain track of its own, beside the gene track              | each transcript with its domains over its exons                                      |
+| Links domain to transcript | by label only, in the `transcript` column                     | by `Parent`, so isoforms keep their own domains                                      |
+| Drawn as intended by       | IGV, the UCSC browser, JBrowse 1 and 2; bedtools reads it too | JBrowse 2; JBrowse 1 with [one setting](#in-jbrowse-1)                               |
+| Index with                 | `tabix -p bed`                                                | `tabix -p gff`                                                                       |
 
 Choose BED12 to add domains to a browser that already shows the genes, or to use
 them in other tools. Choose GFF3 to see which isoform carries which domain: in
@@ -91,6 +91,28 @@ tabix -p gff domains.gff3.gz
   score, with `Name`, `accession`, `description`, `proteinStart` and
   `proteinEnd` attributes. A domain crossing an intron takes a line per exon,
   sharing one `ID`
+
+### In JBrowse 1
+
+Both formats load as tabix tracks in JBrowse 1.17. BED12 needs nothing more than
+the `BEDTabix` store. For GFF3, JBrowse 1 draws only the CDS and UTR children of
+an mRNA, so the domains stay hidden until `subParts` names `protein_match`:
+
+```json
+{
+  "label": "pfam_domains",
+  "type": "CanvasFeatures",
+  "storeClass": "JBrowse/Store/SeqFeature/GFF3Tabix",
+  "urlTemplate": "domains.gff3.gz",
+  "subParts": "CDS, UTR, five_prime_UTR, three_prime_UTR, protein_match",
+  "style": {
+    "color": "function(feature) { return feature.get('type') === 'protein_match' ? '#1f9e89' : 'goldenrod' }"
+  }
+}
+```
+
+Each transcript then shows its domains over its CDS, in one color and without
+the family names JBrowse 2 draws.
 
 ## From a genome to its domains
 
