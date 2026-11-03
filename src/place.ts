@@ -7,6 +7,7 @@ import {
   BED_HEADER,
   bedLine,
   bestOfOverlappingHmmerHits,
+  compareStrings,
   findTranscript,
   parseCall,
   projectResidues,
@@ -15,7 +16,7 @@ import {
 } from './project.ts'
 
 import type { Gff3Row, PlacedCall } from './gff3.ts'
-import type { ProteinCall } from './project.ts'
+import type { CodingTranscript, ProteinCall } from './project.ts'
 
 export interface PlacedFeatures {
   /** the line the file opens with: BED's column names, or GFF3's version */
@@ -77,21 +78,36 @@ export async function placeProteinFeatures(
     )
   }
 
-  const placedCalls: PlacedCall[] = []
+  // a call is renamed to its transcript's ID, so one protein under two names
+  // (rna-XM_1.1 and XP_1.1) is one protein to the HMMER overlap filter, and
+  // a call it names twice is placed once
   const unmatched = new Set<string>()
-  let pastCds = 0
-  for (const call of bestOfOverlappingHmmerHits(parsed)) {
+  const resolved = new Map<
+    string,
+    { call: ProteinCall; transcript: CodingTranscript }
+  >()
+  for (const call of parsed) {
     const transcript = findTranscript(lookup, call.protein)
-    if (!transcript) {
+    if (transcript) {
+      const renamed = { ...call, protein: transcript.id }
+      resolved.set(JSON.stringify(renamed), { call: renamed, transcript })
+    } else {
       unmatched.add(call.protein)
-      continue
     }
+  }
+  const transcriptOf = new Map(
+    [...resolved.values()].map(r => [r.call, r.transcript]),
+  )
+  const placedCalls: PlacedCall[] = []
+  let pastCds = 0
+  for (const call of bestOfOverlappingHmmerHits([...transcriptOf.keys()])) {
+    const transcript = transcriptOf.get(call)!
     const blocks = projectResidues(transcript, call.start, call.end)
-    if (blocks.length === 0) {
+    if (blocks.length > 0) {
+      placedCalls.push({ transcript, call, blocks })
+    } else {
       pastCds++
-      continue
     }
-    placedCalls.push({ transcript, call, blocks })
   }
   if (placedCalls.length === 0) {
     throw new Error(
@@ -115,13 +131,12 @@ export async function placeProteinFeatures(
       }))
   // the whole line breaks a tie, so the same calls in any order (hmmscan
   // chunks concatenated, say) write the same file
-  const compare = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0)
   rows.sort(
     (a, b) =>
-      compare(a.refName, b.refName) ||
+      compareStrings(a.refName, b.refName) ||
       a.start - b.start ||
       a.depth - b.depth ||
-      compare(a.line, b.line),
+      compareStrings(a.line, b.line),
   )
   return {
     header: gff3 ? GFF3_HEADER : `#${BED_HEADER.join('\t')}`,

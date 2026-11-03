@@ -148,6 +148,31 @@ test('the same calls in any order write the same BED', () => {
   expect(reversed.stdout).toBe(forward.stdout)
 })
 
+test('a protein named two ways is one protein: its calls are placed once, and its HMMER hits filtered together', () => {
+  const pfam = calls.split('\n')[0]!
+  const tsv = run(['genes.gff3', 'calls.tsv', '--gff3'], {
+    'genes.gff3': gff3,
+    'calls.tsv': [pfam, pfam.replace('XP_1.1', 'rna-XM_1.1')].join('\n'),
+  })
+  expect(
+    tsv.stdout.split('\n').filter(l => l.includes('protein_match')),
+  ).toHaveLength(2)
+  const domtblout = [
+    'Pkinase PF00069.29 264 XP_1.1 - 20 1 1 1 1 1 1 1e-10 1 1 1 264 4 9 8 14 0.9 Protein kinase domain',
+    'Pkinase_Tyr PF07714.21 264 rna-XM_1.1 - 20 1 1 1 1 1 1 1e-20 1 1 1 264 4 9 8 14 0.9 Protein tyrosine kinase',
+  ].join('\n')
+  const hmmer = run(['genes.gff3', 'calls.domtblout'], {
+    'genes.gff3': gff3,
+    'calls.domtblout': domtblout,
+  })
+  const names = hmmer.stdout
+    .trim()
+    .split('\n')
+    .slice(1)
+    .map(l => l.split('\t')[3])
+  expect(names).toEqual(['Pkinase_Tyr'])
+})
+
 test.each([
   [
     ['genes.gff3', 'calls.tsv', '--soruce', 'Pfam'],
