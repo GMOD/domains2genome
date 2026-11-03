@@ -334,6 +334,18 @@ export function parseCall(
  * one clan, which needs Pfam's clan file. Calls from InterProScan pass
  * through, already resolved.
  */
+export const compareStrings = (a: string, b: string) =>
+  a < b ? -1 : a > b ? 1 : 0
+
+// HMMER prints E-values to two figures, so ties are common; breaking them
+// on the hit itself keeps the winner independent of the input's order
+const byEvalue = (a: ProteinCall, b: ProteinCall) =>
+  +a.evalue - +b.evalue ||
+  compareStrings(a.accession, b.accession) ||
+  compareStrings(a.name, b.name) ||
+  a.start - b.start ||
+  a.end - b.end
+
 export function bestOfOverlappingHmmerHits(calls: ProteinCall[]) {
   const kept: ProteinCall[] = []
   const byProtein = new Map<string, ProteinCall[]>()
@@ -348,7 +360,7 @@ export function bestOfOverlappingHmmerHits(calls: ProteinCall[]) {
   }
   for (const hits of byProtein.values()) {
     const accepted: ProteinCall[] = []
-    for (const hit of hits.sort((a, b) => +a.evalue - +b.evalue)) {
+    for (const hit of hits.sort(byEvalue)) {
       const clashes = accepted.some(a => {
         const shared =
           Math.min(a.end, hit.end) - Math.max(a.start, hit.start) + 1

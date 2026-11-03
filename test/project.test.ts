@@ -220,17 +220,18 @@ test("InterProScan's TSV and GFF3 of one run give the same calls", async () => {
   expect(await keys(path.join(data, 'jag1.gff3'))).toEqual(tsv)
 })
 
+const hit = (name: string, start: number, end: number, evalue: string) => ({
+  protein: 'p',
+  start,
+  end,
+  accession: name,
+  name,
+  description: '',
+  source: 'HMMER',
+  evalue,
+})
+
 test('the best of overlapping HMMER hits wins; InterProScan calls pass through', () => {
-  const hit = (name: string, start: number, end: number, evalue: string) => ({
-    protein: 'p',
-    start,
-    end,
-    accession: name,
-    name,
-    description: '',
-    source: 'HMMER',
-    evalue,
-  })
   const kept = bestOfOverlappingHmmerHits([
     hit('SH3_1', 10, 60, '1e-10'),
     hit('SH3_2', 12, 62, '1e-12'),
@@ -238,6 +239,14 @@ test('the best of overlapping HMMER hits wins; InterProScan calls pass through',
     { ...hit('PF1', 10, 60, '1'), source: 'Pfam' },
   ])
   expect(kept.map(k => k.name).sort()).toEqual(['PF1', 'SH2', 'SH3_2'])
+})
+
+test('overlapping HMMER hits tied on E-value keep the same winner in any order', () => {
+  const tied = [hit('SH3_2', 12, 62, '1e-10'), hit('SH3_1', 10, 60, '1e-10')]
+  expect(bestOfOverlappingHmmerHits(tied).map(k => k.name)).toEqual(['SH3_1'])
+  expect(
+    bestOfOverlappingHmmerHits(tied.toReversed()).map(k => k.name),
+  ).toEqual(['SH3_1'])
 })
 
 test('the BED score is ten times -log10(E), within 0..1000', () => {
