@@ -318,7 +318,9 @@ export function parseCall(
     end: +cols[20]!,
     accession,
     name,
-    description: cols.slice(22).join(' '),
+    // the description column is the target's, which from hmmsearch is the
+    // protein's FASTA header rather than the HMM's
+    description: hmmIsTarget ? cols.slice(22).join(' ') : '-',
     source: 'HMMER',
     evalue: cols[12]!,
   }

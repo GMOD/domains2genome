@@ -128,9 +128,9 @@ test('reads a GTF', async () => {
 const hmmscanRow =
   'Pkinase PF00069.29 264 XP_1.1 - 600 1e-50 170.2 0.1 1 1 1e-53 2e-50 169.9 0.1 1 264 4 9 3 10 0.95 Protein kinase domain'
 const hmmsearchRow =
-  'XP_1.1 - 600 Pkinase PF00069.29 264 1e-50 170.2 0.1 1 1 1e-53 2e-50 169.9 0.1 1 264 4 9 3 10 0.95 Protein kinase domain'
+  'XP_1.1 - 600 Pkinase PF00069.29 264 1e-50 170.2 0.1 1 1 1e-53 2e-50 169.9 0.1 1 264 4 9 3 10 0.95 serine/threonine kinase [Homo sapiens]'
 
-test('a HMMER row names the protein on whichever side it sits', () => {
+test('a HMMER row names the protein on whichever side it sits, and hmmsearch gives no HMM description', () => {
   const isProtein = (id: string) => id === 'XP_1.1'
   const expected = {
     protein: 'XP_1.1',
@@ -143,7 +143,10 @@ test('a HMMER row names the protein on whichever side it sits', () => {
     evalue: '2e-50',
   }
   expect(parseCall(hmmscanRow, isProtein)).toEqual(expected)
-  expect(parseCall(hmmsearchRow, isProtein)).toEqual(expected)
+  expect(parseCall(hmmsearchRow, isProtein)).toEqual({
+    ...expected,
+    description: '-',
+  })
   expect(parseCall('# comment', isProtein)).toBeUndefined()
 })
 
